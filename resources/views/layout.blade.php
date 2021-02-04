@@ -36,12 +36,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Викладачі</a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="#">Дисципліни</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Користувачі</a>
-                    </li>
+
+                    @can('admin')
+                        <li class="nav-item">
+                            <a class="nav-link" href="/users">Користувачі</a>
+                        </li>
+                    @endcan
+                    
                     <li class="nav-item">
                         <!--Logout-->
                         <a class="nav-link" href="{{ route('logout') }}"
