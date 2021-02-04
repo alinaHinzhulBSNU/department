@@ -23,7 +23,52 @@
         <script src="{{ asset('js/popper.min.js') }}"></script>
         <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     </head>
+
     <body>
-        @yield('content')
+        <!--Header-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/">Факультет комп'ютерних наук</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Викладачі</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Дисципліни</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Користувачі</a>
+                    </li>
+                    <li class="nav-item">
+                        <!--Logout-->
+                        <a class="nav-link" href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();">
+                            Вихід
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!--Content-->
+        <div>
+            @yield('content')
+        </div>
+
+        <!--Footer-->
+        <footer class="bg-light text-center text-lg-start fixed-bottom">
+            <div class="text-center p-3">
+                <p>© Факультет комп'ютерних наук ЧНУ ім. Петра Могили</p>
+                <p>(0512) 76-55-74</p>
+                <p>dekanatfkn@gmail.com</p>
+            </div>
+        </footer>
     </body>
 </html>
