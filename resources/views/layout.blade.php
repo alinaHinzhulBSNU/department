@@ -12,8 +12,12 @@
         <!--Font Awesome Icons-->
         <script src="https://kit.fontawesome.com/66af6c845b.js" crossorigin="anonymous"></script>
 
-        <!--Bootstrap-->
-        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}">
+        <!-- main.css is used instead of bootstrap to allow style custimization (Contains bootstrap but with modified colors) --> 
+        <link rel="stylesheet" href="{{ asset('css/main.css')}}" >
+        <!-- this file is generated when sass code (from main.scss) is compiled to css -->
+         
+        <!-- Bootstrap
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}"> -->
 
         <!--Власні стилі-->
         <link rel="stylesheet" href="{{ asset('css/style.css')}}">
@@ -25,7 +29,9 @@
     </head>
 
     <body>
+    
         <!--Header-->
+        
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="/">Факультет комп'ютерних наук</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,5 +76,6 @@
                 <p>dekanatfkn@gmail.com</p>
             </div>
         </footer>
+    
     </body>
 </html>

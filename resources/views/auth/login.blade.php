@@ -5,10 +5,11 @@
 @endsection
 
 @section('content')
+
 <h4 class="text-center p-3">Авторизація</h4>
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-6 justify-content-center">
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
@@ -37,11 +38,11 @@
                 </div>
 
                 <div class="form-group row justify-content-center">
-                    <div class="col-md-3 mx-auto">
+                    <div class="col-md-6 mx-auto">
                         <button type="submit" class="btn btn-primary btn-block">
                             Увійти
                         </button>
-                        <a href="/register" class="btn btn-outline-primary btn-block">
+                        <a href="/register" class="btn btn-outline-secondary btn-block">
                             Зареєструватися
                         </a>
                     </div>

@@ -8,7 +8,7 @@
 <h4 class="text-center p-3">Реєстрація</h4>
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-6">
             <form method="POST" action="{{ route('register') }}">
                 @csrf
 
@@ -55,11 +55,11 @@
                 </div>
 
                 <div class="form-group row justify-content-center">
-                    <div class="col-md-3 mx-auto">
+                    <div class="col-md-6 mx-auto">
                         <button type="submit" class="btn btn-primary btn-block">
                             Зареєструватися
                         </button>
-                        <a href="/login" class="btn btn-outline-primary btn-block">Вхід</a>
+                        <a href="/login" class="btn btn-outline-secondary btn-block">Вхід</a>
                     </div>
                 </div>
             </form>

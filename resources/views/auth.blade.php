@@ -12,8 +12,10 @@
     <!--Font Awesome Icons-->
     <script src="https://kit.fontawesome.com/66af6c845b.js" crossorigin="anonymous"></script>
 
-    <!--Bootstrap-->
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}">
+      <!-- main.css is used instead of bootstrap to allow style custimization. Contains bootstrap but with modified colors --> 
+      <link rel="stylesheet" href="{{ asset('css/main.css')}}" >
+    <!-- Bootstrap
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}"> -->
 
     <!--Власні стилі-->
     <link rel="stylesheet" href="{{ asset('css/style.css')}}">
