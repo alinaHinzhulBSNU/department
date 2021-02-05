@@ -1,0 +1,15 @@
+//overriding bootstrap colors: (BEFORE bootstrap import) 
+$theme-colors: (
+  "primary":  #CA6F1E,
+  "info": #34495E,  
+  "warning": #FFC300, 
+  "secondary":#0E6251,
+);
+
+
+$body-bg: #FDFEFE; //#FEF5E7; //background for the page 
+$body-color: #111;
+
+
+
+@import "node_modules/bootstrap/scss/bootstrap";
