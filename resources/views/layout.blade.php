@@ -42,12 +42,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Викладачі</a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="#">Дисципліни</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Користувачі</a>
-                    </li>
+
+                    @can('admin')
+                        <li class="nav-item">
+                            <a class="nav-link" href="/users">Користувачі</a>
+                        </li>
+                    @endcan
+                    
                     <li class="nav-item">
                         <!--Logout-->
                         <a class="nav-link" href="{{ route('logout') }}"
@@ -64,12 +69,12 @@
         </nav>
 
         <!--Content-->
-        <div>
+        <div class="fixed-center">
             @yield('content')
         </div>
 
         <!--Footer-->
-        <footer class="bg-light text-center text-lg-start fixed-bottom">
+        <footer class="bg-light text-center text-lg-start">
             <div class="text-center p-3">
                 <p>© Факультет комп'ютерних наук ЧНУ ім. Петра Могили</p>
                 <p>(0512) 76-55-74</p>
