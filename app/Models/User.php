@@ -40,4 +40,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //add info from table teachers if it is a teacher
+    public function teacher(){
+        return $this->hasMany(
+            Teacher::class,
+            'user_id',
+            'id'
+        );
+    }
 }

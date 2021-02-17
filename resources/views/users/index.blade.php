@@ -6,7 +6,7 @@
 
 @section('content')
     <!--Title-->
-    <h4 class="text-primary text-center pb-3 pt-3">Адміністрування користувачів</h4>
+    <h4 class="text-primary text-primary text-center pb-3 pt-3">Адміністрування користувачів</h4>
 
     <!--Search-->
     <div class="row justify-content-end pb-3">

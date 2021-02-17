@@ -1,12 +1,12 @@
 @extends('layout')
 
 @section('title')
-    Редагувати користувача
+    Редагувати дані про користувача
 @endsection
 
 @section('content')
-<h4 class="text-center p-3">Редагувати дані про користувача</h4>
-<div class="container">
+<h4 class="text-danger text-center p-3">Редагувати дані про користувача</h4>
+<div class="container p-4">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <form method="post" action="/users/{{ $user->id }}">
@@ -19,7 +19,7 @@
 
                 <!--Роль-->
                 <div class="form-group row">
-                    <div class="label col-md-4">
+                    <div class="label col-md-4 text-right">
                         <label for="author">Роль користувача:</label>
                     </div>
                     <div class="col-md-8">

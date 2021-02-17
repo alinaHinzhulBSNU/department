@@ -1,6 +1,6 @@
 <div class="form-group row">
-    <div class="label col-md-4">
-        <label for="author">{{ $label }}</label>
+    <div class="label col-md-4 text-right">
+        <label for="{{ $id }}">{{ $label }}</label>
     </div>
     <div class="col-md-8">
         <select id="{{ $id  }}" name="{{ $id }}" class="form-control {{ $errors->has($id) ? 'invalid':'' }}">
