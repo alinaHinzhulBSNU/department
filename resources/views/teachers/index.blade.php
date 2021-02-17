@@ -12,7 +12,7 @@
     <!--Content-->
     <div class="row">
         <table class="table table-hover table-bordered">
-            <caption>Список викладачів</caption>
+            <caption class="text-center">Список викладачів</caption>
             <thead class="thead-light">
                 <tr class="text-center">
                     <th class="text-left" scope="col">ПІБ</th>

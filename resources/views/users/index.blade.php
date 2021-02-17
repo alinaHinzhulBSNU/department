@@ -27,7 +27,7 @@
     <!--Content-->
     <div class="row">
         <table class="table table-hover table-bordered">
-            <caption>Список користувачів</caption>
+            <caption class="text-center">Список користувачів</caption>
             <thead class="thead-light">
                 <tr class="text-center">
                     <th class="text-left" scope="col">ПІБ</th>

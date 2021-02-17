@@ -33,13 +33,17 @@
 
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/teachers">Викладачі</a>
-                        </li>
+                        @can('admin')
+                            <li class="nav-item">
+                                <a class="nav-link" href="/teachers">Викладачі</a>
+                            </li>
+                        @endcan
 
+                        @can('admin')
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Дисципліни</a>
+                            <a class="nav-link" href="/subjects">Дисципліни</a>
                         </li>
+                        @endcan
 
                         @can('admin')
                             <li class="nav-item">
