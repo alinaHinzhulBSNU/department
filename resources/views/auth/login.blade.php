@@ -6,7 +6,7 @@
 
 @section('content')
 
-<h4 class="text-center pb-3">Авторизація</h4>
+<h2 class="text-primary text-center pb-3">Авторизація</h2>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6 justify-content-center">

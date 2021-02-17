@@ -1,15 +1,56 @@
+//variables
+$accent:  #ffad88;
+$color: #427590;
+
 //overriding bootstrap colors: (BEFORE bootstrap import) 
 $theme-colors: (
   "primary":  #CA6F1E,
   "info": #34495E,  
-  "warning": #FFC300, 
+  "warning": #ffea47, 
   "secondary":#0E6251,
+  "success": #7bd095,
+  "danger": $accent,
 );
-
-
 $body-bg: #FDFEFE; //#FEF5E7; //background for the page 
-$body-color: #111;
+$body-color: $color;
+$light: #f5e4d0;
+$border-radius: 10rem;
 
+//custom styles
+*{
+  font-family: 'Nunito', sans-serif;
+}
+html{
+  height: 100%;
+  body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    header{
+      flex: 0 0 auto;
+      a {
+        i{
+          color: $color;
+        }
+        span{
+          color: $color;
+        }
+      }
+      #navbarNav .navbar-nav li a{
+        color: $color;
+        &:hover{
+          color: $accent;
+        }
+      }
+    }
+    section{
+      flex: 1 0 auto;
+    }
+    footer{
+      flex: 0 0 auto;
+    }
+  }
+}
 
 
 @import "node_modules/bootstrap/scss/bootstrap";

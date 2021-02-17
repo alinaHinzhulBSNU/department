@@ -7,18 +7,13 @@
 
     <!--Google Fonts-->
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Forum&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
 
     <!--Font Awesome Icons-->
     <script src="https://kit.fontawesome.com/66af6c845b.js" crossorigin="anonymous"></script>
 
-      <!-- main.css is used instead of bootstrap to allow style custimization. Contains bootstrap but with modified colors --> 
-      <link rel="stylesheet" href="{{ asset('css/main.css')}}" >
-    <!-- Bootstrap
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}"> -->
-
-    <!--Власні стилі-->
-    <link rel="stylesheet" href="{{ asset('css/style.css')}}">
+    <!-- main.css is used instead of bootstrap to allow style custimization. Contains bootstrap but with modified colors --> 
+    <link rel="stylesheet" href="{{ asset('css/main.css')}}" >
 
     <!--JS-->
     <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
@@ -27,8 +22,8 @@
 </head>
 <body>
     <div class="text-center p-3">
-        <h4>Чорноморський національний університет імені Петра Могили</h4>
-        <h2>Факультет комп'ютерних наук</h2>
+        <h5>Чорноморський національний університет імені Петра Могили</h5>
+        <h5>Факультет комп'ютерних наук</h5>
         <div class="row justify-content-center">
         <svg xmlns="http://www.w3.org/2000/svg" id="Capa_1" enable-background="new 0 0 496.156 496.156" height="75" viewBox="0 0 496.156 496.156" width="75"><g><path d="m40.986 82.333h414.214c6.525 0 11.814 5.289 11.814 11.814v271.254h-437.842v-271.254c0-6.525 5.289-11.814 11.814-11.814z" fill="#575b6d"/><path d="m49.037 102.198h398.112v243.338h-398.112z" fill="#69b0ee"/><path d="m491.552 365.401c2.39-.148 4.448 1.669 4.596 4.059.009.143.011.287.005.431-1.323 11.547-6.95 22.172-15.76 29.753-10.721 9.277-24.461 14.318-38.637 14.177h-387.356c-28.436 0-51.84-19.274-54.397-43.93-.089-2.393 1.778-4.405 4.171-4.495.144-.005.287-.004.431.005z" fill="#62667c"/><path d="m195.104 365.401h105.947c0 6.401-5.189 11.589-11.589 11.589h-82.768c-6.401 0-11.59-5.189-11.59-11.589z" fill="#828a9e"/><g fill="#eeefee"><path d="m216.895 289.059 50.174-130.39h12.227l-50.351 130.39z"/><path d="m121.887 219.008 83.442-42.997v12.405l-70.322 35.271v.36l70.322 35.253v12.405l-83.442-42.979z"/><path d="m374.298 228.903-83.442 42.802v-12.405l70.848-35.247v-.36l-70.848-35.276v-12.405l83.448 42.808z"/></g></g></svg>
         <!-- <svg xmlns="http://www.w3.org/2000/svg" height="75" viewBox="0 0 128 128" width="75"><g id="Circle_Grid" data-name="Circle Grid"><circle cx="64" cy="64" fill="#f6c863" r="64"/></g><g id="icon"><path d="m28.941 35.941h70.123a2 2 0 0 1 2 2v45.921a0 0 0 0 1 0 0h-74.123a0 0 0 0 1 0 0v-45.921a2 2 0 0 1 2-2z" fill="#575b6d"/><path d="m43.405 26.203h41.195v67.397h-41.195z" fill="#69b0ee" transform="matrix(0 1 -1 0 123.904 -4.101)"/><path d="m105.218 83.862a.734.734 0 0 1 .779.76 7.82 7.82 0 0 1 -2.668 5.037 9.846 9.846 0 0 1 -6.541 2.4h-65.576c-4.814 0-8.776-3.263-9.209-7.437a.734.734 0 0 1 .779-.76z" fill="#62667c"/><path d="m55.032 83.862h17.936a0 0 0 0 1 0 0 1.962 1.962 0 0 1 -1.962 1.962h-14.012a1.962 1.962 0 0 1 -1.962-1.962 0 0 0 0 1 0 0z" fill="#828a9e"/><g fill="#eeefee"><path d="m58.721 70.938 8.494-22.074h2.07l-8.524 22.074z"/><path d="m42.637 59.079 14.126-7.279v2.1l-11.905 5.971v.061l11.905 5.968v2.1l-14.126-7.276z"/><path d="m85.368 60.754-14.126 7.246v-2.1l11.994-5.967v-.061l-11.994-5.972v-2.1l14.127 7.247z"/></g></g></svg>
@@ -39,6 +34,9 @@
         </div>
     </div>
 
-    @yield('content')
+    <!--Form-->
+    <div class="text-center p-3">
+        @yield('content')
+    </div>
 </body>
 </html>

@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<h4 class="text-center pb-3">Реєстрація</h4>
+<h2 class="text-primary text-center pb-3">Реєстрація</h2>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
