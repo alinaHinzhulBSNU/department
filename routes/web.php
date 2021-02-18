@@ -17,5 +17,8 @@ Route::resource('/teachers', "\App\Http\Controllers\TeachersController");
 //Subjects
 Route::resource('/subjects', "\App\Http\Controllers\SubjectsController");
 
+//Groups
+Route::resource('/groups', "\App\Http\Controllers\GroupsController");
+
 //User search
 Route::get('/search', [\App\Http\Controllers\UsersController::class, 'search']);
