@@ -25,10 +25,10 @@
     <body>
         <!--Header-->
         <header>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light pb-3 pt-3">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light pb-3 pt-3"> 
                 <a class="navbar-brand" href="/">
                     <i class="fas fa-desktop"></i>
-                    <span>Факультет комп'ютерних наук</span>
+                    <span class="font-weight-bold">Факультет комп'ютерних наук</span>
                 </a>
 
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
