@@ -20,5 +20,8 @@ Route::resource('/subjects', "\App\Http\Controllers\SubjectsController");
 //Groups
 Route::resource('/groups', "\App\Http\Controllers\GroupsController");
 
+//Students
+Route::resource('/students', "\App\Http\Controllers\StudentsController");
+
 //User search
 Route::get('/search', [\App\Http\Controllers\UsersController::class, 'search']);
