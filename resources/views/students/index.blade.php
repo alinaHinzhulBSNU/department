@@ -1,13 +1,13 @@
 @extends('layout')
 
 @section('title')
-    Студенти: 
+    Студенти
 @endsection
 
 @section('content')
     <!--Title-->
-    <h4 class="text-primary text-center pb-3 pt-3">Студенти</h4>
-    <a href="/teachers/create" class="btn btn-success mb-3">Додати студента</a>
+    <h4 class="text-primary text-center pb-3 pt-3">Студенти:</h4>
+    <a href="/students/create" class="btn btn-success mb-3">Додати студента</a>
 
     <!--Content-->
     <div class="row">
@@ -48,8 +48,17 @@
                     </td>
                     
 
-                    <td></td>
-                    <td></td>
+                    <td>
+                        <a href="/students/{{ $student->id }}/edit" class="btn btn-warning btn-block">Редагувати</button>
+                    </td>
+                    <td>
+                    <form method="post" action="/students/{{ $student->id }}">
+                        @csrf
+                        {{ method_field('delete') }}
+
+                        <button type="submit" class="btn btn-danger btn-block">Видалити</button>
+                    </form>
+                    </td>
                    
                 </tr>
                 @endforeach
