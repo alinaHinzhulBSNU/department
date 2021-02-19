@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="row m-0 p-0 justify-content-center">
-    <div class="jumbotron col-md-5 m-4">
+    <div class="jumbotron col-md-5 m-4" style="background-color:#E9F7EF">
         <h4 class="text-secondary">Знайти групу:</h4>
         <hr class="my-4">
         <p class="lead">//TO DO: форма для пошуку студентської групи</p>
@@ -14,7 +14,7 @@
             <a href="/groups" class="btn btn-primary btn-lg" href="#">Знайти групу</a>
         </p>
     </div>
-    <div class="jumbotron col-md-5 m-4">
+    <div class="jumbotron col-md-5 m-4" style="background-color:#E9F7EF">
         <h4 class="text-secondary">Знайти студента:</h4>
         <hr class="my-4">
         <p class="lead">//TO DO: форма для пошуку студента за прізвищем</p>
