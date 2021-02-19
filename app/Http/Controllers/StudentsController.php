@@ -96,7 +96,14 @@ class StudentsController extends Controller
      */
     public function edit($id)
     {
-        //
+        if(Gate::allows('admin')){
+            $student = Student::find($id);
+            $users = User::all()->sortBy('name');
+            $groups = Group::all(); 
+            return view('students/edit', ['student' => $student, 'users' => $users, 'groups' => $groups]);
+        }else{
+            return redirect('/');
+        }
     }
 
     /**
@@ -108,7 +115,22 @@ class StudentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if(Gate::allows('admin')){
+            $student = Student::find($id);
+            //$data = $this->validateData(\request());
+            $data = $request; 
+
+            $student->group_id = $data['group_id']; 
+            $student->is_class_leader = $data['is_class_leader'] == "on" ? 1 : 0;
+            $student->has_grant = $data['has_grant']== "on" ? 1 : 0;
+            $student->has_social_grant = $data['has_social_grant']== "on" ? 1 : 0;
+
+            $student->save();
+    
+            return redirect('/students');
+        }else{
+            return redirect('/');
+        }
     }
 
     /**
