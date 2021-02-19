@@ -141,6 +141,19 @@ class StudentsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(Gate::allows('admin')){
+            //delete data from students table 
+            $student = Student::find($id);
+            $student->delete();
+
+            //change role of the user
+            $roles = config('enums.roles');
+            $student->user->role = $roles['STUDENT']; //is STUDENT the default role?
+            $student->user->save();
+    
+            return redirect('/students');
+        }else{
+            return redirect('/');
+        }
     }
 }
