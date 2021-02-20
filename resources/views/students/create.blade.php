@@ -39,17 +39,20 @@
                 <!-- Староста -->
                 <div>
                     <label for="is_class_leader">Староста</label>
-                    <input type="checkbox" id="is_class_leader" name="is_class_leader">
+                    <input type='hidden' value='0' name="is_class_leader">
+                    <input type="checkbox" value='1' id="is_class_leader" name="is_class_leader">
                 </div>
                 <!-- Академ. Стипендія -->
                 <div>
                     <label for="has_grant">Академічна стипендія</label>
-                    <input type="checkbox" id="has_grant" name="has_grant">
+                    <input type='hidden' value='0' name="has_grant">
+                    <input type="checkbox" value='1' id="has_grant" name="has_grant">
                 </div>
                 <!-- Соц. стипендія  -->
                 <div>
                     <label for="has_social_grant">Соціальна стипендія</label>
-                    <input type="checkbox" id="has_social_grant" name="has_social_grant">
+                    <input type='hidden' value='0' name="has_social_grant">
+                    <input type="checkbox" value='1' id="has_social_grant" name="has_social_grant">
                 </div>
                
                 <!-- in the form of a table: --> 

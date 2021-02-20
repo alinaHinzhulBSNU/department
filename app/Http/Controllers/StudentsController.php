@@ -36,11 +36,11 @@ class StudentsController extends Controller
     {
         if(Gate::allows('admin')){
             $roles = config('enums.roles'); //not quite sure how this works 
-            $users = User::where('role', '!=', $roles['STUDENT'])->get(); //?? 
+            $users = User::where('role', '!=', $roles['STUDENT'])->get(); //not already a student  
             $groups = Group::all(); 
             return view('students/create', ['users' => $users, 'groups' => $groups]); 
         }else{
-            return redirect('/students'); 
+            return redirect('/'); 
         }
     }
 
@@ -53,20 +53,21 @@ class StudentsController extends Controller
     public function store(Request $request)
     {
         if(Gate::allows('admin')){
-            //add data to teachers table
+            //add data to students table
             $student = new Student();
-            //$data = $this->validateData($request);
-            $data = $request; 
-           //TODO: need to translate checkbox values (on, off) into 0 and 1 before inserting into DB!
+            $data = $this->validateData($request);
+           
+          
             $student->user_id = $data['user_id'];
             $student->group_id = $data['group_id']; 
-            $student->is_class_leader = $data['is_class_leader'] == "on" ? 1 : 0;
-            $student->has_grant = $data['has_grant']== "on" ? 1 : 0;
-            $student->has_social_grant = $data['has_social_grant']== "on" ? 1 : 0;
+            
+            $student->is_class_leader = $data['is_class_leader']; 
+            $student->has_grant = $data['has_grant']; 
+            $student->has_social_grant = $data['has_social_grant']; 
 
             $student->save();
 
-            //change role of the user
+            //change role of the user: 
             $roles = config('enums.roles');
             $student->user->role = $roles['STUDENT'];
             $student->user->save();
@@ -117,13 +118,13 @@ class StudentsController extends Controller
     {
         if(Gate::allows('admin')){
             $student = Student::find($id);
-            //$data = $this->validateData(\request());
-            $data = $request; 
+     
+            $data = $this->validateData(\request());
 
             $student->group_id = $data['group_id']; 
-            $student->is_class_leader = $data['is_class_leader'] == "on" ? 1 : 0;
-            $student->has_grant = $data['has_grant']== "on" ? 1 : 0;
-            $student->has_social_grant = $data['has_social_grant']== "on" ? 1 : 0;
+            $student->is_class_leader = $data['is_class_leader']; 
+            $student->has_grant = $data['has_grant']; 
+            $student->has_social_grant = $data['has_social_grant']; 
 
             $student->save();
     
@@ -148,12 +149,29 @@ class StudentsController extends Controller
 
             //change role of the user
             $roles = config('enums.roles');
-            $student->user->role = $roles['STUDENT']; //is STUDENT the default role?
+            //added NONE role to enum so the account can be used again to create a student or a teacher: 
+            //to delete the account altogether we can use "USERS" -> delete 
+            $student->user->role = $roles['NONE']; //set role to none if one stops being a student 
             $student->user->save();
     
             return redirect('/students');
         }else{
             return redirect('/');
         }
+    }
+
+    //VALIDATE
+    private function validateData($data){
+        return $this->validate($data, [
+            'group_id' => ['required'],
+            'user_id' => ['required'],
+            'is_class_leader' => ['required'], 
+            'has_grant' => ['required'], 
+            'has_social_grant' => ['required'], 
+        ], [
+            'group_id.required' => 'Номер групи має бути вказаний!',
+            'user_id.required' => 'Відповідний обліковий запис має бути обраний!',
+
+        ]);
     }
 }
