@@ -35,25 +35,27 @@
                 </div>
 
 
-                <!-- create an include for a checkbox! --> 
-                <!-- Староста -->
-                <div>
-                    <label for="is_class_leader">Староста</label>
-                    <input type='hidden' value='0' name="is_class_leader">
-                    <input type="checkbox" value='1' id="is_class_leader" name="is_class_leader">
-                </div>
-                <!-- Академ. Стипендія -->
-                <div>
-                    <label for="has_grant">Академічна стипендія</label>
-                    <input type='hidden' value='0' name="has_grant">
-                    <input type="checkbox" value='1' id="has_grant" name="has_grant">
-                </div>
-                <!-- Соц. стипендія  -->
-                <div>
-                    <label for="has_social_grant">Соціальна стипендія</label>
-                    <input type='hidden' value='0' name="has_social_grant">
-                    <input type="checkbox" value='1' id="has_social_grant" name="has_social_grant">
-                </div>
+                <!-- create an include for a checkbox! -->
+                <div class="form-group row p-0 m-0">
+                    <!-- Староста -->
+                    <div class="col-md-4">
+                        <input class="form-group" type='hidden' value='0' name="is_class_leader">
+                        <input class="form-group" type="checkbox" value='1' id="is_class_leader" name="is_class_leader">
+                        <label class="form-group" for="is_class_leader">Староста</label>
+                    </div>
+                    <!-- Академ. Стипендія -->
+                    <div class="col-md-4">
+                        <input type='hidden' value='0' name="has_grant">
+                        <input type="checkbox" value='1' id="has_grant" name="has_grant">
+                        <label for="has_grant">Академічна стипендія</label>
+                    </div>
+                    <!-- Соц. стипендія  -->
+                    <div class="col-md-4">
+                        <input type='hidden' value='0' name="has_social_grant">
+                        <input type="checkbox" value='1' id="has_social_grant" name="has_social_grant">
+                        <label for="has_social_grant">Соціальна стипендія</label>
+                    </div>
+                </div> 
                
                 <!-- in the form of a table: --> 
                 <!-- <div>

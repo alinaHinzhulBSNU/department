@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<h4 class="text-danger text-center p-3">Редагувати дані про студента</h4>
+<h4 class="text-danger text-center p-3">Редагувати дані про студента '{{ $student->user->name }}'</h4>
 <div class="container p-4">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -15,9 +15,6 @@
 
                 <!--Обліковий запис-->
                 <input type="hidden" id="user_id" name="user_id" value="{{ $student->user->id }}">
-
-                <!-- ПІБ --> 
-                <h3 class="m-2">{{ $student->user->name }}</h3>
 
                 <!--Відповідна група -->
                 <div class="form-group row">
@@ -36,32 +33,30 @@
                     @include("includes/validationErrors", ['errFieldName' => 'group_id'])
                 </div>
 
-                 <!-- Староста -->
-                 <div>
-                    <label for="is_class_leader">Староста</label>
-                    <input type='hidden' value='0' name="is_class_leader">
-                    <input type="checkbox"  name="is_class_leader" value="1"
-                        @if($student->is_class_leader == 1) 
-                            checked 
-                    @endif>
-                </div>
-                <!-- Академ. Стипендія -->
-                <div>
-                    <label for="has_grant">Академічна стипендія</label>
-                    <input type='hidden' value='0' name="has_grant">
-                    <input type="checkbox" id="has_grant" name="has_grant" value="1"
-                        @if($student->has_grant == 1) 
-                            checked 
-                        @endif>
-                </div>
-                <!-- Соц. стипендія  -->
-                <div>
-                    <label for="has_social_grant">Соціальна стипендія</label>
-                    <input type='hidden' value='0' name="has_social_grant">
-                    <input type="checkbox" id="has_social_grant" name="has_social_grant" value="1"
-                        @if($student->has_social_grant == 1) 
-                            checked 
-                        @endif>
+                <div class="form-group row p-0 m-0">
+                    <!-- Староста -->
+                    <div class="col-md-4">
+                        <input type='hidden' value='0' name="is_class_leader">
+                        <input type="checkbox"  name="is_class_leader" value="1"
+                            @if($student->is_class_leader == 1) checked @endif>
+                        <label for="is_class_leader">Староста</label>
+                    </div>
+
+                    <!-- Академ. Стипендія -->
+                    <div class="col-md-4">
+                        <input type='hidden' value='0' name="has_grant">
+                        <input type="checkbox" id="has_grant" name="has_grant" value="1"
+                            @if($student->has_grant == 1) checked @endif>
+                        <label for="has_grant">Академічна стипендія</label>
+                    </div>
+
+                    <!-- Соц. стипендія  -->
+                    <div class="col-md-4">
+                        <input type='hidden' value='0' name="has_social_grant">
+                        <input type="checkbox" id="has_social_grant" name="has_social_grant" value="1"
+                            @if($student->has_social_grant == 1) checked @endif>
+                        <label for="has_social_grant">Соціальна стипендія</label>
+                    </div>
                 </div>
 
                 <!--Кнопки-->
