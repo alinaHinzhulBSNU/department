@@ -19,7 +19,7 @@
         <hr class="my-4">
         <p class="lead">//TO DO: форма для пошуку студента за прізвищем</p>
         <p class="lead">
-            <a href="#" class="btn btn-primary btn-lg" href="#">Знайти студента</a>
+            <a href="/students" class="btn btn-primary btn-lg" href="#">Знайти студента</a>
         </p>
     </div>
 </div>

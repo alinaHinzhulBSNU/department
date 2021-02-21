@@ -4,6 +4,8 @@ return [
         'STUDENT' => "student",
         'TEACHER' => "teacher",
         'ADMIN' => "admin",
+        'NONE' => "none", //if user stops being a student (is deleted from students) 
+                        // so the account can still be used to make them a student or a teacher again  
     ],
     'departments' => [
         'АКІТ' => "Кафедра автоматизації та комп'ютерно-інтегрованих технологій",
