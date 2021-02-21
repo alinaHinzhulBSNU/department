@@ -14,24 +14,24 @@
         <table class="table table-hover table-bordered">
             <caption class="text-center">Список викладачів</caption>
             <thead class="thead-light">
-                <tr class="text-center">
-                    <th class="text-left" scope="col">ПІБ</th>
-                    <th class="text-left" scope="col">Вчене звання</th>
-                    <th class="text-left" scope="col">Кафедра</th>
-                    <th class="text-center" scope="col">Редагувати</th>
-                    <th class="text-center" scope="col">Видалити</th>
+                <tr>
+                    <th class="text-left align-middle" scope="col">ПІБ</th>
+                    <th class="text-left align-middle" scope="col">Вчене звання</th>
+                    <th class="text-left align-middle" scope="col">Кафедра</th>
+                    <th class="text-center align-middle" scope="col">Редагувати</th>
+                    <th class="text-center align-middle" scope="col">Видалити</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($teachers as $teacher)
                 <tr>
-                    <td class="text-left">{{ $teacher->user->name }}</td>
-                    <td class="text-left">{{ $teacher->degree }}</td>
-                    <td class="text-left">{{ $teacher->department }}</td>
-                    <td>
+                    <td class="text-left align-middle">{{ $teacher->user->name }}</td>
+                    <td class="text-left align-middle">{{ $teacher->degree }}</td>
+                    <td class="text-left align-middle">{{ $teacher->department }}</td>
+                    <td class="text-left align-middle">
                         <a href="/teachers/{{ $teacher->id }}/edit" class="btn btn-warning btn-block">Редагувати</button>
                     </td>
-                    <td>
+                    <td class="text-left align-middle">
                     <form method="post" action="/teachers/{{ $teacher->id }}">
                         @csrf
                         {{ method_field('delete') }}

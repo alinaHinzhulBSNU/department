@@ -29,28 +29,28 @@
         <table class="table table-hover table-bordered">
             <caption class="text-center">Список користувачів</caption>
             <thead class="thead-light">
-                <tr class="text-center">
-                    <th class="text-left" scope="col">ПІБ</th>
-                    <th class="text-left" scope="col">Роль</th>
-                    <th class="text-center" scope="col">Редагувати</th>
-                    <th class="text-center" scope="col">Видалити</th>
+                <tr>
+                    <th class="text-left align-middle" scope="col">ПІБ</th>
+                    <th class="text-left align-middle" scope="col">Роль</th>
+                    <th class="text-center align-middle" scope="col">Редагувати</th>
+                    <th class="text-center align-middle" scope="col">Видалити</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($users as $user)
                 <tr>
-                    <td class="text-left">{{ $user->name }}</td>
-                    <td class="text-left">{{ $user->role }}</td>
-                    <td>
+                    <td class="text-left align-middle">{{ $user->name }}</td>
+                    <td class="text-left align-middle">{{ $user->role }}</td>
+                    <td class="text-left align-middle">
                         <a href="/users/{{ $user->id }}/edit" class="btn btn-warning btn-block">Редагувати</button>
                     </td>
-                    <td>
-                    <form method="post" action="/users/{{ $user->id }}">
-                        @csrf
-                        {{ method_field('delete') }}
+                    <td class="text-left align-middle">
+                        <form method="post" action="/users/{{ $user->id }}">
+                            @csrf
+                            {{ method_field('delete') }}
 
-                        <button type="submit" class="btn btn-danger btn-block">Видалити</button>
-                    </form>
+                            <button type="submit" class="btn btn-danger btn-block">Видалити</button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach
