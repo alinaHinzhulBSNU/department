@@ -96,9 +96,9 @@ class TeachersController extends Controller
             $teacher = Teacher::find($id);
             $teacher->delete();
 
-            //change role of the user
+            //change role of the user to NONE 
             $roles = config('enums.roles');
-            $teacher->user->role = $roles['STUDENT'];
+            $teacher->user->role = $roles['NONE']; 
             $teacher->user->save();
     
             return redirect('/teachers');
