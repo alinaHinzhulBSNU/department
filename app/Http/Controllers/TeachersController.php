@@ -27,7 +27,7 @@ class TeachersController extends Controller
     public function create(){
         if(Gate::allows('admin')){
             $roles = config('enums.roles');
-            $users = User::where('role', '!=' , $roles['TEACHER'])->get();
+            $users = User::where('role', '==' , $roles['NONE'])->get();
 
             return view('/teachers/create', ['users' => $users]);
         }else{
