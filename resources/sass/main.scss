@@ -11,6 +11,7 @@ $theme-colors: (
   "success": #7bd095,
   "danger": $accent,
 );
+
 $body-bg: #FDFEFE; 
 $body-color: $color;
 
@@ -46,6 +47,11 @@ html{
     }
     section{
       flex: 1 0 auto;
+      .table-hover tbody tr{
+        &:hover{
+          background-color: #faedff !important;
+        }
+      }
     }
     footer{
       flex: 0 0 auto;

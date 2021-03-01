@@ -38,6 +38,10 @@ html body section {
   flex: 1 0 auto;
 }
 
+html body section .table-hover tbody tr:hover {
+  background-color: #faedff !important;
+}
+
 html body footer {
   flex: 0 0 auto;
 }
