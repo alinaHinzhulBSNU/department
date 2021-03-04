@@ -25,3 +25,7 @@ Route::resource('/groups', "\App\Http\Controllers\GroupsController");
 //Students
 Route::get('/students/search', [\App\Http\Controllers\StudentsController::class, 'search']);
 Route::resource('/students', "\App\Http\Controllers\StudentsController");
+
+//Grades
+//Route::get('/grades/search', [\App\Http\Controllers\GradesController::class, 'search']);
+//Route::resource('/grades', "\App\Http\Controllers\GradesController");

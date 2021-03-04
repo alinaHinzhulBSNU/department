@@ -25,6 +25,7 @@
                         <th class="text-center align-middle" scope="col">Редагувати</th>
                         <th class="text-center align-middle" scope="col">Видалити</th>
                     @endcan
+                    <th class="text-center align-middle" scope="col">Журнал</th>
                 </tr>
             </thead>
             <tbody>
@@ -47,6 +48,9 @@
                             </form>
                         </td>
                     @endcan
+                    <td class="text-center align-middle">
+                        <a href="#" class="btn btn-success btn-block">Журнал</button>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>

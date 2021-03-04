@@ -13,7 +13,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        'App\Models\Grade' => 'App\Policies\GradePolicy',
     ];
 
     /**
@@ -28,11 +28,6 @@ class AuthServiceProvider extends ServiceProvider
         //Для адміністратора
         Gate::define('admin', function($user){
             return $user->role == 'admin';
-        });
-
-        //Для викладача
-        Gate::define('teach', function ($user){
-            return $user->role == 'teacher';
         });
     }
 }

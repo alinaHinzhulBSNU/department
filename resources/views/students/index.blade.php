@@ -9,7 +9,8 @@
     <h4 class="text-primary text-center pb-3 pt-3">Студенти:</h4>
     @can('admin')
         <a href="/students/create" class="btn btn-success mb-3">Додати студента</a>
-    @endcan 
+    @endcan
+    
     <!--Content-->
     <div class="row">
         <table class="table table-hover table-bordered">
