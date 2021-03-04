@@ -10,6 +10,7 @@ use App\Models\Student;
 
 class StudentsController extends Controller
 {
+   
     public function __construct(){
         $this->middleware('auth');
     }
@@ -83,6 +84,7 @@ class StudentsController extends Controller
     {
         if(Gate::allows('admin')){
             $student = Student::find($id);
+     
             $data = $this->validateData(\request());
 
             $student->group_id = $data['group_id']; 
@@ -106,12 +108,10 @@ class StudentsController extends Controller
             //delete data from students table 
             $student = Student::find($id);
             $student->delete();
-
+            
             //change role of the user
             $roles = config('enums.roles');
-            //added NONE role to enum so the account can be used again to create a student or a teacher: 
-            //to delete the account altogether we can use "USERS" -> delete 
-            $student->user->role = $roles['NONE']; //set role to none if one stops being a student 
+             $student->user->role = $roles['NONE']; //set role to none if one stops being a student 
             $student->user->save();
     
             return redirect('/students');
