@@ -136,4 +136,28 @@ class StudentsController extends Controller
             'has_social_grant' => ['Потрібно вказати, чи має студент соціальну стипендію!'], 
         ]);
     }
+
+    //SEARCH
+    public function search(Request $request){
+        if(Gate::allows('admin')){
+            $students = Student::all();
+            $name =  $request->input('name');
+
+            if($name){
+                $found_students = array();
+
+                foreach ($students as $student){
+                    if(mb_stristr($student->user->name, $name, false, 'UTF-8') !== false){
+                        array_push($found_students, $student);
+                    }
+                }
+
+                return view('students/index', ['students' => $found_students]);
+            }
+
+            return view('students/index', ['students' => $students]);
+        }else{
+            return redirect('/');
+        }
+    }
 }

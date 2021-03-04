@@ -105,4 +105,52 @@ class GroupsController extends Controller
             'end_year.integer' => 'Кінець академічного року - це ціле число!',
         ]);
     }
+
+    //SEARCH
+    public function search(Request $request){
+        if(Gate::allows('admin')){
+            $groups = Group::all();
+            $major =  $request->input('major');
+            $course =  $request->input('course');
+
+            $found_groups = array();
+
+            // Якщо обрали і курс, і спеціальність
+            if($major and $course){
+                foreach ($groups as $group){
+                    if($group->major === $major and $group->course == $course){
+                        array_push($found_groups, $group);
+                    }
+                }
+
+                return view('groups/index', ['groups' => $found_groups]);
+            }
+
+            // Якщо обрали лише спеціальність
+            if($major){
+                foreach ($groups as $group){
+                    if($group->major === $major){
+                        array_push($found_groups, $group);
+                    }
+                }
+
+                return view('groups/index', ['groups' => $found_groups]);
+            }
+
+             // Якщо обрали лише курс
+            if($course){
+                foreach ($groups as $group){
+                    if($group->course == $course){
+                        array_push($found_groups, $group);
+                    }
+                }
+
+                return view('groups/index', ['groups' => $found_groups]);
+            }
+
+            return view('groups/index', ['groups' => $groups]);
+        }else{
+            return redirect('/');
+        }
+    }
 }

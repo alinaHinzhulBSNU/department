@@ -11,7 +11,7 @@
     <!--Search-->
     <div class="row justify-content-end pb-3">
         <div class="col-md-4">
-            <form method="get" action="/search">
+            <form method="get" action="/users/search">
                 <div class="row">
                     <div class="col-md-8">
                         <input type="text" name="name" id="name" placeholder="ПІБ користувача" class="form-control">
