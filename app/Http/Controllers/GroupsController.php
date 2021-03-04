@@ -32,7 +32,7 @@ class GroupsController extends Controller
         if(Gate::allows('admin')){
             $group = new Group();
             $data = $this->validateData($request);
-
+    
             $group->number = $data['number'];
             $group->course = $data['course'];
             $group->major = $data['major'];
@@ -87,7 +87,7 @@ class GroupsController extends Controller
     //VALIDATE
     private function validateData($data){
         return $this->validate($data, [
-            'number' => ['required', 'min:3'],
+            'number' => ['required', 'min:3', 'unique:groups'],
             'course' => ['required', 'integer', 'max:6'],
             'major' => ['required'],
             'start_year' => ['required', 'integer'],
@@ -95,6 +95,7 @@ class GroupsController extends Controller
         ], [
             'number.required' => 'Номер групи має бути заповнений!',
             'number.min' => 'Номер групи має складатися з 3 або більшої кількості символів!',
+            'number.unique' => 'Група з таким номером вже існує!', 
             'course.required' => 'Номер курсу має бути заповнений!',
             'course.integer' => 'Номер курсу - це ціле число!',
             'course.max' => 'Номер курсу не може бути більше 6!',
