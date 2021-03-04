@@ -74,10 +74,10 @@ class UsersController extends Controller
     }
 
     //SEARCH
-    public function search(Request $request){
+    public function search(){
         if(Gate::allows('admin')){
             $users = User::all();
-            $name =  $request->input('name');
+            $name =  \request()->input('name');
 
             if($name){
                 $found_users = array();

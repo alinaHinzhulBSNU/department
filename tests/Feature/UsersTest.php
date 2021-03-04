@@ -80,6 +80,24 @@ class UsersTest extends TestCase
         $response->assertRedirect('/');
     }
 
+    /** @test */
+    public function search_for_user_by_name_test(){
+        $this->actingAsAdmin();
+
+        // Обрати лише 1 з 2 користувачів
+        $user = User::factory()->create(['name' => 'aBcd']);
+        $user->save();
+        $user = User::factory()->create(['name' => 'ef']);
+        $user->save();
+
+        $response = $this->call('GET', '/users/search', ['name' => 'bc']);
+        $response->assertOk();
+        $response->assertViewHas('users');
+
+        $groups = $response->original['users'];
+        $this->assertCount(1, $groups);
+    }
+
     // Supporting functions
     private function actingAsAdmin()
     {

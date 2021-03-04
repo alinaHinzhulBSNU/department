@@ -103,6 +103,58 @@ class GroupsTest extends TestCase
         $response->assertRedirect('/groups');
     }
 
+    /** @test */
+    public function search_for_group_by_course_test(){
+        $this->actingAsUser();
+
+        // З двох груп обрати лише одну!
+        $group = Group::factory()->create(['course' => 3]);
+        $group->save();
+        $group = Group::factory()->create(['course' => 2]);
+        $group->save();
+
+        $response = $this->call('GET', '/groups/search', ['course' => 3]);
+        $response->assertOk();
+        $response->assertViewHas('groups');
+
+        $groups = $response->original['groups'];
+        $this->assertCount(1, $groups);
+    }
+
+    /** @test */
+    public function search_for_group_by_major_test(){
+        $this->actingAsUser();
+
+        $group = Group::factory()->create(['major' => 'ab']);
+        $group->save();
+        $group = Group::factory()->create(['major' => 'ef']);
+        $group->save();
+
+        $response = $this->call('GET', '/groups/search', ['major' => 'ab']);
+        $response->assertOk();
+        $response->assertViewHas('groups');
+
+        $groups = $response->original['groups'];
+        $this->assertCount(1, $groups);
+    }
+
+    /** @test */
+    public function search_for_group_by_major_and_number_test(){
+        $this->actingAsUser();
+
+        $group = Group::factory()->create(['major' => 'ab', 'course' => 3]);
+        $group->save();
+        $group = Group::factory()->create(['major' => 'ef', 'course' => 3]);
+        $group->save();
+
+        $response = $this->call('GET', '/groups/search', ['major' => 'ab', 'course' => 3]);
+        $response->assertOk();
+        $response->assertViewHas('groups');
+
+        $groups = $response->original['groups'];
+        $this->assertCount(1, $groups);
+    }
+
     // Supporting functions
     private function actingAsAdmin()
     {
