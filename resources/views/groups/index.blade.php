@@ -49,7 +49,7 @@
                         </td>
                     @endcan
                     <td class="text-center align-middle">
-                        <a href="#" class="btn btn-success btn-block">Журнал</button>
+                        <a href="/grades/{{ $group->id }}" class="btn btn-success btn-block">Журнал</button>
                     </td>
                 </tr>
                 @endforeach

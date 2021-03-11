@@ -43,7 +43,7 @@ class User extends Authenticatable
 
     //add info from table teachers if it is a teacher
     public function teacher(){
-        return $this->hasMany(
+        return $this->hasOne(
             Teacher::class,
             'user_id',
             'id'

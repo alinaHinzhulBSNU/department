@@ -18,4 +18,12 @@ class Teacher extends Model
             'id'
         );
     }
+
+    public function subjects(){
+        return $this->hasMany(
+            Subject::class,
+            'teacher_id',
+            'id'
+        );
+    }
 }

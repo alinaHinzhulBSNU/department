@@ -10,4 +10,12 @@ class Group extends Model
     use HasFactory;
     
     public $timestamps = false;
+
+    public function students(){
+        return $this->hasMany(
+            Student::class,
+            'group_id',
+            'id'
+        );
+    }
 }

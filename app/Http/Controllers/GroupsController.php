@@ -109,7 +109,7 @@ class GroupsController extends Controller
 
     //SEARCH
     public function search(){
-        $groups = Group::all();
+        $groups = Group::all()->sortBy('number');
         $major =  \request()->input('major');
         $course = \request()->input('course');
 

@@ -28,4 +28,12 @@ class Student extends Model
             'id'
         );
     }
+
+    public function grades(){
+        return $this->hasMany(
+            Grade::class,
+            'student_id',
+            'id'
+        );
+    }
 }
