@@ -19,7 +19,6 @@ class GradesTest extends TestCase{
         //anything you need to do before every test goes here 
    }
 
-   // SEE 
    /** @test */
    public function logged_out_user_cannot_see_grades_of_a_group(){  
         $response = $this->get('/grades/1')->assertRedirect('/login'); 
