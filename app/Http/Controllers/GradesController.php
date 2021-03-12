@@ -25,7 +25,7 @@ class GradesController extends Controller
     }
 
     public function create(){
-        // лише викладачі можуть виставляти оцінки
+        // лише викладачі можуть виставляти оцінки 
         if(Gate::allows('teach')){
             $subjects = Auth::user()->teacher->subjects;
             return view('grades/create', ['group' => $this->group, 'subjects' => $subjects]);
@@ -96,7 +96,7 @@ class GradesController extends Controller
     }
     
     //VALIDATE
-    private function validateData($data){
+    private function validateData($data){ 
         return $this->validate($data, [
             'subject_id' => ['required'],
             'student_id' => ['required'],
