@@ -11,6 +11,9 @@
     <!--Add grades-->
     @can('teach')
         <a href="/grades/{{ $group->id }}/create" class="btn btn-success mb-3">Виставити бали</a>
+        <br/>
+        <a href="/grades/{{ $group->id }}/pdf" class="btn btn-warning mb-3">Завантажити відомість</a> <!-- all subjects --> 
+        
     @endcan
 
     <!--Content-->
@@ -24,8 +27,15 @@
                         <th class="text-center align-middle" scope="col">{{ $subject->name }}</th>
                     @endforeach
                 </tr>
+               
             </thead>
             <tbody>
+                <tr> <!-- PDF for each subject separately --> 
+                    <td class="text-left align-middle" scope="col"></td>
+                    @foreach($subjects as $subject)
+                        <td><a href="/grades/{{ $group->id }}/pdf" class="btn btn-warning mb-3">Завантажити відомість</a> </td>
+                    @endforeach
+                </tr>
                 @foreach($group->students as $student)
                 <tr>
                     <td class="text-left align-middle">{{ $student->user->name }}</td>
@@ -58,6 +68,7 @@
                                         @endif
                                     </div>  
                                 @endif
+
                             @endforeach
                         </th>
                     @endforeach

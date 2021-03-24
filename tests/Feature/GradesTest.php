@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Models\Grade;
+use App\Models\Group;
+use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\Subject;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,6 +25,8 @@ class GradesTest extends TestCase{
    public function logged_out_user_cannot_see_grades_of_a_group(){  
         $response = $this->get('/grades/1')->assertRedirect('/login'); 
    }
+
+
 
     /** @test */
     public function a_grade_can_be_added_through_form_by_teacher(){ 
@@ -101,6 +105,9 @@ class GradesTest extends TestCase{
         $this->assertCount(0, Grade::all());   
 
     }
+
+
+
 
 
       // Helper functions: 
