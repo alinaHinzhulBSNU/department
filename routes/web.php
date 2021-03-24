@@ -35,3 +35,5 @@ Route::patch('/grades/{group_id}/{id}', [\App\Http\Controllers\GradesController:
 Route::delete('/grades/{group_id}/{id}', [\App\Http\Controllers\GradesController::class, 'destroy']);
 //pdf: 
 Route::get('/grades/{group_id}/pdf',  [\App\Http\Controllers\GradesController::class, 'pdf']); 
+//pdf for one subject: 
+Route::get('/grades/{group_id}/{subject_id}/pdf',  [\App\Http\Controllers\GradesController::class, 'pdfOneSubject']);

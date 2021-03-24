@@ -33,7 +33,7 @@
                 <tr> <!-- PDF for each subject separately --> 
                     <td class="text-left align-middle" scope="col"></td>
                     @foreach($subjects as $subject)
-                        <td><a href="/grades/{{ $group->id }}/pdf" class="btn btn-warning mb-3">Завантажити відомість</a> </td>
+                        <td><a href="/grades/{{ $group->id }}/{{ $subject->id }}/pdf" class="btn btn-warning mb-3">Завантажити відомість</a> </td>
                     @endforeach
                 </tr>
                 @foreach($group->students as $student)

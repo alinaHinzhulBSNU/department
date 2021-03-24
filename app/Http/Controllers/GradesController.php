@@ -17,6 +17,8 @@ class GradesController extends Controller
 {
     private $group;// група, журнал якої переглядають
 
+    private $subject; // subject to load PDF for 
+
     public function __construct(){
         $this->middleware('auth');
         $this->group = Group::find(\request()->route('group_id'));
@@ -40,6 +42,56 @@ class GradesController extends Controller
         //loadHTML is the func that converts html data to pdf  
         return $pdf->stream();  //return!
         //stream func allows to show pdf file in browser 
+    }
+
+    function pdfOneSubject(){
+
+        $this->subject = Subject::find(\request()->route('subject_id'));
+        //dd($this->subject); // got subject id!! 
+
+        $pdf = \App::make('dompdf.wrapper'); 
+        $pdf->loadHTML($this->convertGradesDataToHtmlCurrentSubject());
+        //loadHTML is the func that converts html data to pdf  
+        return $pdf->stream();  //return!
+        //stream func allows to show pdf file in browser 
+    }
+
+    function convertGradesDataToHtmlCurrentSubject(){
+        //to use another font, we have to fix the encoding! 
+        $output = '
+        <head><style>body { font-family: DejaVu Sans }</style>
+        </head> 
+        <body>
+        <h3 align="center">Група '.$this->group->number.'</h3>
+        <table width="100%" style="border-collapse: collapse; border: 0px;">
+        <tr>
+            <th style="border: 1px solid; padding:12px;" width="30%">Студент</th>
+            <th style="border: 1px solid; padding:12px;" width="30%">'.$this->subject->name.'</th>
+        </tr>'; 
+        foreach($this->group->students as $student ){ 
+            $output .= '
+            <tr>
+                <td style="border: 1px solid; padding:12px;" width="30%">
+                '.$student->user->name .'
+                </td>'; 
+
+                //open cell 
+                $output .= '<td align="center" style="border: 1px solid; padding:12px;" width="30%">'; 
+                foreach($student->grades as $grade){
+                    if($grade->subject->id === $this->subject->id){
+                    $output .= $grade->grade; 
+                    
+                    }
+                }    
+                $output .= '</td>' ;     //if there is a grade, fill it in, if there isn't - leave blank         
+
+            $output .= '
+            </tr>
+            '; 
+        }
+        $output .= '</body>'; 
+        return $output; 
+
     }
 
     //for ALL subjects:  
