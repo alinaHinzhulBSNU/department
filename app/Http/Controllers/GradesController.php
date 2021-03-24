@@ -31,32 +31,23 @@ class GradesController extends Controller
     }
 
     // --------------------------- PDF functionality --------------------------
-    // we get group and subjects data in array. We can get the grade though those two somehow, right? 
-    //  group->student->grade (->subjectID)
-    // we have already sent all of the data to the view, so no need to worry about that 
-    // the route is ready as well!
-
     function pdf(){
         $pdf = \App::make('dompdf.wrapper'); 
-        $pdf->loadHTML($this->convertGradesDataToHtmlCurrentTeacher());
+        $pdf->loadHTML($this->convertGradesToHtmlAllSubjects());
         //loadHTML is the func that converts html data to pdf  
-        return $pdf->stream();  //return!
+        return $pdf->stream();
         //stream func allows to show pdf file in browser 
     }
 
     function pdfOneSubject(){
 
         $this->subject = Subject::find(\request()->route('subject_id'));
-        //dd($this->subject); // got subject id!! 
-
         $pdf = \App::make('dompdf.wrapper'); 
-        $pdf->loadHTML($this->convertGradesDataToHtmlCurrentSubject());
-        //loadHTML is the func that converts html data to pdf  
-        return $pdf->stream();  //return!
-        //stream func allows to show pdf file in browser 
+        $pdf->loadHTML($this->convertGradesToHtmlCurrentSubject());
+        return $pdf->stream(); 
     }
 
-    function convertGradesDataToHtmlCurrentSubject(){
+    function convertGradesToHtmlCurrentSubject(){
         //to use another font, we have to fix the encoding! 
         $output = '
         <head><style>body { font-family: DejaVu Sans }</style>
@@ -66,7 +57,7 @@ class GradesController extends Controller
         <table width="100%" style="border-collapse: collapse; border: 0px;">
         <tr>
             <th style="border: 1px solid; padding:12px;" width="30%">Студент</th>
-            <th style="border: 1px solid; padding:12px;" width="30%">'.$this->subject->name.'</th>
+            <th style="border: 1px solid; padding:12px;" width="30%"><p>'.$this->subject->name.'</p></th>
         </tr>'; 
         foreach($this->group->students as $student ){ 
             $output .= '
@@ -94,28 +85,26 @@ class GradesController extends Controller
 
     }
 
-    //for ALL subjects:  
-    function convertGradesDataToHtml(){
+    //for ALL subjects:   
+    function convertGradesToHtmlAllSubjects(){
         $subjects = $this->subjects();
-        //$subjects = Subject::all(); 
-        // $this->group;
-
-        //to use another font, we have to fix the encoding! 
+        // would be good to make the subject names display vertically 
         $output = '
         <head><style>body { font-family: DejaVu Sans }</style>
         </head> 
         <body>
-        <h3 align="center">'.$this->group->number.'</h3>
+        <h3 align="center">Факультет Комп\'ютерних Наук</h3>
+        <h3 align="center">Група '.$this->group->number.'</h3>
         <table width="100%" style="border-collapse: collapse; border: 0px;">
         <tr>
-            <th style="border: 1px solid; padding:12px;" width="30%">Student</th>'; 
-        //all  columns for all subjects:
+            <th style="border: 1px solid; padding:12px;" width="30%">Студент</th>'; 
+
         foreach($subjects as $subject ){
             $output .= '<th style="border: 1px solid; padding:12px;" width="30%">'.$subject->name.'</th>'; 
         }   
-        $output .= '</tr>';  //header of the table 
+        $output .= '</tr>'; 
 
-        foreach($this->group->students as $student ){ //contents
+        foreach($this->group->students as $student ){ 
             $output .= '
             <tr>
                 <td style="border: 1px solid; padding:12px;" width="30%">
@@ -123,99 +112,30 @@ class GradesController extends Controller
                 </td>'; 
 
                 foreach($subjects as $subject ){
+                    $output .= '<td style="border: 1px solid; padding:12px;" align="center" width="30%">
+                        '; 
                     foreach($student->grades as $grade){
                         if($grade->subject->id === $subject->id){
-                        $output .= '<td style="border: 1px solid; padding:12px;" width="30%">
-                        '.$grade->grade .'
-                        </td>' ;
+                        $output .= $grade->grade; 
+                       
                         }
                         
-                    }                  
+                    } 
+                    $output .= '</td>' ;
+                                    
                 } 
 
             $output .= '
             </tr>
-            '; //also add a for-loop for all the subjects (but later, when i make sure this bit works) 
+            '; 
         }
 
         $output.='</table> </body>'; 
 
         return $output; 
     }
-
-    // TODO: no two grades with the same student and subject ID!  
-    // alternative: only grades for CURRENT subject! 
-    function convertGradesDataToHtmlCurrentTeacher(){
-        //$subjects = Auth::user()->teacher->subjects;
-        $subjects = $this->subjects(); //gets only subjects of current teacher? 
-        //$subjects = Subject::all(); 
-        //dd($subjects); 
-        //to use another font, we have to fix the encoding! 
-        $output = '
-        <head><style>body { font-family: DejaVu Sans }</style>
-        </head> 
-        <body>
-        <h3 align="center">'.$this->group->number.'</h3>
-        <table width="100%" style="border-collapse: collapse; border: 0px;">
-        <tr>
-            <th style="border: 1px solid; padding:12px;" width="30%">Student</th>'; 
-        //all  columns for all subjects:
-        foreach($subjects as $subject ){
-            $output .= '<th style="border: 1px solid; padding:12px;" width="30%">'.$subject->name.'</th>'; 
-        }   
-        $output .= '</tr>';  //header of the table 
-
-        foreach($this->group->students as $student ){ //contents
-            $output .= '
-            <tr>
-                <td style="border: 1px solid; padding:12px;" width="30%">
-                '.$student->user->name .'
-                </td>'; 
-
-                // foreach($subjects as $subject ){
-                //     foreach($student->grades as $grade){
-                //         if($grade->subject->id === $subject->id){
-                //         $output .= '<td style="border: 1px solid; padding:12px;" width="30%">
-                //         '.$grade->grade .'
-                //         </td>' ;
-                //         }
-                        
-                //     }                  
-                // } 
-
-                foreach($student->grades as $grade){
-                    foreach($subjects as $subject){
-                        if($grade->subject->id === $subject->id){
-                        $output .= '<td style="border: 1px solid; padding:12px;" width="30%">
-                        '.$grade->grade .'
-                        </td>' ;
-                        }
-                        // else{
-                        //     $output .= '<td style="border: 1px solid; padding:12px;" width="30%">
-                        //     a
-                        //     </td>' ; 
-                        // }
-                        
-                    }                  
-                }
-
-            $output .= '
-            </tr>
-            '; //also add a for-loop for all the subjects (but later, when i make sure this bit works) 
-        }
-
-        $output.='</table> </body>'; 
-
-        return $output; 
-    }
-
-    //for ONE subject: 
-    
-
 
     // --------------------------- end of PDF functionality --------------------------
-
-
 
 
 
