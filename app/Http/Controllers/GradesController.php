@@ -74,7 +74,7 @@ class GradesController extends Controller
                     
                     }
                 }    
-                $output .= '</td>' ;     //if there is a grade, fill it in, if there isn't - leave blank         
+                $output .= '</td>' ;  //if there is a grade, fill it in, if there isn't - leave blank         
 
             $output .= '
             </tr>
@@ -122,14 +122,12 @@ class GradesController extends Controller
                         
                     } 
                     $output .= '</td>' ;
-                                    
                 } 
 
             $output .= '
             </tr>
             '; 
         }
-
         $output.='</table> </body>'; 
 
         return $output; 
