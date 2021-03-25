@@ -33,3 +33,7 @@ Route::post('/grades/{group_id}', [\App\Http\Controllers\GradesController::class
 Route::get('/grades/{group_id}/{id}/edit',  [\App\Http\Controllers\GradesController::class, 'edit']);
 Route::patch('/grades/{group_id}/{id}', [\App\Http\Controllers\GradesController::class, 'update']);
 Route::delete('/grades/{group_id}/{id}', [\App\Http\Controllers\GradesController::class, 'destroy']);
+//pdf: 
+Route::get('/grades/{group_id}/pdf',  [\App\Http\Controllers\GradesController::class, 'pdf']); 
+//pdf for one subject: 
+Route::get('/grades/{group_id}/{subject_id}/pdf',  [\App\Http\Controllers\GradesController::class, 'pdfOneSubject']);

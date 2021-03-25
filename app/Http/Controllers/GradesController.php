@@ -10,9 +10,14 @@ use App\Models\Grade;
 use App\Models\Teacher;
 use App\Models\Subject;
 
+use DB; //predefined class (seemingly)
+use PDF; //alias of the plugin class we've installed 
+
 class GradesController extends Controller
 {
     private $group;// група, журнал якої переглядають
+
+    private $subject; // subject to load PDF for 
 
     public function __construct(){
         $this->middleware('auth');
@@ -21,11 +26,119 @@ class GradesController extends Controller
 
     public function index(){
         $subjects = $this->subjects();
+        //dd($subjects); 
         return view('grades/index', ['group' => $this->group, 'subjects' => $subjects]);
     }
 
+    // --------------------------- PDF functionality --------------------------
+    function pdf(){
+        $pdf = \App::make('dompdf.wrapper'); 
+        $pdf->loadHTML($this->convertGradesToHtmlAllSubjects());
+        //loadHTML is the func that converts html data to pdf  
+        return $pdf->stream();
+        //stream func allows to show pdf file in browser 
+    }
+
+    function pdfOneSubject(){
+
+        $this->subject = Subject::find(\request()->route('subject_id'));
+        $pdf = \App::make('dompdf.wrapper'); 
+        $pdf->loadHTML($this->convertGradesToHtmlCurrentSubject());
+        return $pdf->stream(); 
+    }
+
+    function convertGradesToHtmlCurrentSubject(){
+        //to use another font, we have to fix the encoding! 
+        $output = '
+        <head><style>body { font-family: DejaVu Sans }</style>
+        </head> 
+        <body>
+        <h3 align="center">Група '.$this->group->number.'</h3>
+        <table width="100%" style="border-collapse: collapse; border: 0px;">
+        <tr>
+            <th style="border: 1px solid; padding:12px;" width="30%">Студент</th>
+            <th style="border: 1px solid; padding:12px;" width="30%"><p>'.$this->subject->name.'</p></th>
+        </tr>'; 
+        foreach($this->group->students as $student ){ 
+            $output .= '
+            <tr>
+                <td style="border: 1px solid; padding:12px;" width="30%">
+                '.$student->user->name .'
+                </td>'; 
+
+                //open cell 
+                $output .= '<td align="center" style="border: 1px solid; padding:12px;" width="30%">'; 
+                foreach($student->grades as $grade){
+                    if($grade->subject->id === $this->subject->id){
+                    $output .= $grade->grade; 
+                    
+                    }
+                }    
+                $output .= '</td>' ;  //if there is a grade, fill it in, if there isn't - leave blank         
+
+            $output .= '
+            </tr>
+            '; 
+        }
+        $output .= '</body>'; 
+        return $output; 
+
+    }
+
+    //for ALL subjects:   
+    function convertGradesToHtmlAllSubjects(){
+        $subjects = $this->subjects();
+        // would be good to make the subject names display vertically 
+        $output = '
+        <head><style>body { font-family: DejaVu Sans }</style>
+        </head> 
+        <body>
+        <h3 align="center">Факультет Комп\'ютерних Наук</h3>
+        <h3 align="center">Група '.$this->group->number.'</h3>
+        <table width="100%" style="border-collapse: collapse; border: 0px;">
+        <tr>
+            <th style="border: 1px solid; padding:12px;" width="30%">Студент</th>'; 
+
+        foreach($subjects as $subject ){
+            $output .= '<th style="border: 1px solid; padding:12px;" width="30%">'.$subject->name.'</th>'; 
+        }   
+        $output .= '</tr>'; 
+
+        foreach($this->group->students as $student ){ 
+            $output .= '
+            <tr>
+                <td style="border: 1px solid; padding:12px;" width="30%">
+                '.$student->user->name .'
+                </td>'; 
+
+                foreach($subjects as $subject ){
+                    $output .= '<td style="border: 1px solid; padding:12px;" align="center" width="30%">
+                        '; 
+                    foreach($student->grades as $grade){
+                        if($grade->subject->id === $subject->id){
+                        $output .= $grade->grade; 
+                       
+                        }
+                        
+                    } 
+                    $output .= '</td>' ;
+                } 
+
+            $output .= '
+            </tr>
+            '; 
+        }
+        $output.='</table> </body>'; 
+
+        return $output; 
+    }
+
+    // --------------------------- end of PDF functionality --------------------------
+
+
+
     public function create(){
-        // лише викладачі можуть виставляти оцінки
+        // лише викладачі можуть виставляти оцінки 
         if(Gate::allows('teach')){
             $subjects = Auth::user()->teacher->subjects;
             return view('grades/create', ['group' => $this->group, 'subjects' => $subjects]);
@@ -96,7 +209,7 @@ class GradesController extends Controller
     }
     
     //VALIDATE
-    private function validateData($data){
+    private function validateData($data){ 
         return $this->validate($data, [
             'subject_id' => ['required'],
             'student_id' => ['required'],
