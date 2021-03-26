@@ -37,6 +37,7 @@
                         @foreach($subjects as $subject)
                             <td><a href="/grades/{{ $group->id }}/{{ $subject->id }}/pdf" class="btn btn-warning mb-3">Завантажити відомість</a> </td>
                         @endforeach
+                        <td class="text-left align-middle" scope="col"></td>
                     </tr>
                 @endcan
                
