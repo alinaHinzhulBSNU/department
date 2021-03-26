@@ -6,7 +6,7 @@
 
 @section('content')
     <!--Title-->
-    <h4 class="text-primary text-center pb-3 pt-3">Журнал групи №{{ $group->number }}:</h4>
+    <h4 class="text-primary text-center pb-3 pt-3">Рейтинг / Журнал групи №{{ $group->number }}:</h4>
 
     <!--Add grades-->
     @can('teach')
@@ -18,7 +18,7 @@
 
     <!--Content-->
     <div class="row">
-        <table class="table table-hover table-bordered">
+        <table id="gradebook" class="table table-hover table-bordered table-sortable">
             <caption class="text-center">Список груп</caption>
             <thead class="thead-light">
                 <tr>
@@ -26,9 +26,10 @@
                     @foreach($subjects as $subject)
                         <th class="text-center align-middle" scope="col">{{ $subject->name }}</th>
                     @endforeach
+                    <th>Рейтинговий бал</th>
                 </tr>
-               
             </thead>
+
             <tbody>
                 @can('teach')
                     <tr> <!-- PDF for each subject separately --> 
@@ -41,9 +42,12 @@
                
                 @foreach($group->students as $student)
                 <tr>
-                    <td  class="text-left align-middle">{{ $student->user->name }}</td>
+                    <!--Name of student-->
+                    <td class="text-left align-middle">{{ $student->user->name }}</td>
+
+                    <!--Grades for subjects-->
                     @foreach($subjects as $subject)
-                        <th class="text-center align-middle" scope="col">
+                        <td class="text-center align-middle" scope="col">
                             @foreach($student->grades as $grade)
                                 @if($grade->subject->id === $subject->id)
                                     <div class="row">
@@ -71,10 +75,12 @@
                                         @endif
                                     </div>  
                                 @endif
-
                             @endforeach
-                        </th>
+                        </td>
                     @endforeach
+
+                    <!--Grade for rating-->
+                    <td class="text-center align-middle">{{ $student->rating() }}</td>
                 </tr>
                 @endforeach
             </tbody>

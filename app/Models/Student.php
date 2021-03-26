@@ -36,4 +36,21 @@ class Student extends Model
             'id'
         );
     }
+
+    // Average grade for rating 
+    public function rating(){
+        $sum = 0;
+        $creditsSum = 0;
+
+        foreach($this->grades as $grade){
+            $sum += $grade->grade * $grade->subject->credit;
+            $creditsSum += $grade->subject->credit;
+        }
+
+        if($creditsSum > 0){
+            $result = round($sum / $creditsSum, 2);
+        }
+
+        return $result;
+    }
 }

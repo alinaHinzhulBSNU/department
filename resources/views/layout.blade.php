@@ -14,6 +14,7 @@
 
         <!-- main.css is used instead of bootstrap to allow style custimization (Contains bootstrap but with modified colors) --> 
         <link rel="stylesheet" href="{{ asset('css/main.css')}}" >
+        <link rel="stylesheet" href="{{ asset('css/tablesort.css')}}" >
         <!-- this file is generated when sass code (from main.scss) is compiled to css -->
 
         <!--JS-->
@@ -84,5 +85,8 @@
                 <p>dekanatfkn@gmail.com</p>
             </div>
         </footer>
+
+        <!--Script for rating-->
+        <script src="{{ asset('js/tablesort.js') }}"></script>
     </body>
 </html>

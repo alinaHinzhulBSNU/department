@@ -1,0 +1,21 @@
+#gradebook th{
+    cursor: pointer;
+}
+
+#gradebook .th-sort-asc::after{
+    content: "\25b4";
+}
+
+#gradebook .th-sort-desc::after{
+    content: "\25be";
+}
+
+#gradebook .th-sort-asc::after,
+#gradebook .th-sort-desc::after{
+    margin-left: 10px;
+}
+
+#gradebook .th-sort-asc,
+#gradebook .th-sort-desc{
+    background: rgba(0, 0, 0, 0.2);
+}
