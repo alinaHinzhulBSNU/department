@@ -41,6 +41,7 @@ class Student extends Model
     public function rating(){
         $sum = 0;
         $creditsSum = 0;
+        $result = 0;
 
         foreach($this->grades as $grade){
             $sum += $grade->grade * $grade->subject->credit;
