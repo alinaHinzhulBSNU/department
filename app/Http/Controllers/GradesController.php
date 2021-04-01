@@ -10,7 +10,7 @@ use App\Models\Grade;
 use App\Models\Teacher;
 use App\Models\Subject;
 
-use DB; //predefined class (seemingly)
+use DB; 
 use PDF; //alias of the plugin class we've installed 
 
 class GradesController extends Controller
