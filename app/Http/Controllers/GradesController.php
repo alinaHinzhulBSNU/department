@@ -11,7 +11,7 @@ use App\Models\Teacher;
 use App\Models\Subject;
 
 use DB; 
-use PDF; //alias of the plugin class we've installed (DomPdf)
+use PDF; //alias of the plugin class we've installed (DomPdf)  
 
 class GradesController extends Controller
 {
