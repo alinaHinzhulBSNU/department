@@ -31,7 +31,7 @@ class GroupsController extends Controller
     public function store(Request $request){
         if(Gate::allows('admin')){
             $group = new Group();
-            $data = $this->validateData($request);
+            $data = $this->validateCreatedData($request);
     
             $group->number = $data['number'];
             $group->course = $data['course'];
@@ -60,9 +60,8 @@ class GroupsController extends Controller
     public function update($id){
         if(Gate::allows('admin')){
             $group = Group::find($id);
-            $data = $this->validateData(\request());
+            $data = $this->validateUpdatedData(\request());
     
-            $group->number = $data['number'];
             $group->course = $data['course'];
             $group->major = $data['major'];
             $group->start_year = $data['start_year'];
@@ -82,29 +81,6 @@ class GroupsController extends Controller
         }
 
         return redirect('/groups');
-    }
-    
-    //VALIDATE
-    private function validateData($data){
-        return $this->validate($data, [
-            'number' => ['required', 'min:3', 'unique:groups'],
-            'course' => ['required', 'integer', 'max:6'],
-            'major' => ['required'],
-            'start_year' => ['required', 'integer'],
-            'end_year' => ['required', 'integer'],
-        ], [
-            'number.required' => 'Номер групи має бути заповнений!',
-            'number.min' => 'Номер групи має складатися з 3 або більшої кількості символів!',
-            'number.unique' => 'Група з таким номером вже існує!', 
-            'course.required' => 'Номер курсу має бути заповнений!',
-            'course.integer' => 'Номер курсу - це ціле число!',
-            'course.max' => 'Номер курсу не може бути більше 6!',
-            'major.required' => 'Назва спеціальності має бути заповнена!',
-            'start_year.required' => 'Початок академічного року має бути заповнений!',
-            'start_year.integer' => 'Початок академічного року - це ціле число!',
-            'end_year.required' => 'Кінець академічного року має бути заповнений!',
-            'end_year.integer' => 'Кінець академічного року - це ціле число!',
-        ]);
     }
 
     //SEARCH
@@ -149,5 +125,47 @@ class GroupsController extends Controller
         }
 
         return view('groups/index', ['groups' => $groups]);
+    }
+
+    //VALIDATE
+    private function validateCreatedData($data){
+        return $this->validate($data, [
+            'number' => ['required', 'min:3', 'unique:groups'],
+            'course' => ['required', 'integer', 'max:6'],
+            'major' => ['required'],
+            'start_year' => ['required', 'integer'],
+            'end_year' => ['required', 'integer'],
+        ], [
+            'number.required' => 'Номер групи має бути заповнений!',
+            'number.min' => 'Номер групи має складатися з 3 або більшої кількості символів!',
+            'number.unique' => 'Група з таким номером вже існує!', 
+            'course.required' => 'Номер курсу має бути заповнений!',
+            'course.integer' => 'Номер курсу - це ціле число!',
+            'course.max' => 'Номер курсу не може бути більше 6!',
+            'major.required' => 'Назва спеціальності має бути заповнена!',
+            'start_year.required' => 'Початок академічного року має бути заповнений!',
+            'start_year.integer' => 'Початок академічного року - це ціле число!',
+            'end_year.required' => 'Кінець академічного року має бути заповнений!',
+            'end_year.integer' => 'Кінець академічного року - це ціле число!',
+        ]);
+    }
+
+    // Інші правила валідації при редагуванні
+    private function validateUpdatedData($data){
+        return $this->validate($data, [
+            'course' => ['required', 'integer', 'max:6'],
+            'major' => ['required'],
+            'start_year' => ['required', 'integer'],
+            'end_year' => ['required', 'integer'],
+        ], [
+            'course.required' => 'Номер курсу має бути заповнений!',
+            'course.integer' => 'Номер курсу - це ціле число!',
+            'course.max' => 'Номер курсу не може бути більше 6!',
+            'major.required' => 'Назва спеціальності має бути заповнена!',
+            'start_year.required' => 'Початок академічного року має бути заповнений!',
+            'start_year.integer' => 'Початок академічного року - це ціле число!',
+            'end_year.required' => 'Кінець академічного року має бути заповнений!',
+            'end_year.integer' => 'Кінець академічного року - це ціле число!',
+        ]);
     }
 }

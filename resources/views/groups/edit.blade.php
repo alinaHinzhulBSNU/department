@@ -13,10 +13,6 @@
                 @csrf
                 {{ method_field('patch') }}
 
-                <!--Номер групи-->
-                @include("includes/input", ['object' => $group, 'id' => 'number', 
-                'label' => 'Номер групи:', 'name' => 'Введіть номер групи'])
-
                 <!--Курс-->
                 @include("includes/input", ['object' => $group, 'id' => 'course', 
                 'label' => 'Курс:', 'name' => 'Введіть номер курсу'])
