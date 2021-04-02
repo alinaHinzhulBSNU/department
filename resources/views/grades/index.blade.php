@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('title')
-    Журнал
+    Рейтинг / Журнал
 @endsection
 
 @section('content')
@@ -19,7 +19,7 @@
     <!--Content-->
     <div class="row">
         <table id="gradebook" class="table table-hover table-bordered table-sortable">
-            <caption class="text-center">Список груп</caption>
+            <caption class="text-center">Журнал групи №{{ $group->number }}</caption>
             <thead class="thead-light">
                 <tr>
                     <th class="text-left align-middle" scope="col">Ім'я студента</th>
