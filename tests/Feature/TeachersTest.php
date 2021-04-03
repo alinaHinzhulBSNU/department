@@ -104,7 +104,7 @@ class TeachersTest extends TestCase
     }
 
     /** @test */
-    public function a_group_can_not_be_deleted_by_user(){
+    public function a_teacher_can_not_be_deleted_by_user(){
         $this->actingAsUser();
 
         $user = User::factory()->create(['role' => 'teacher']);

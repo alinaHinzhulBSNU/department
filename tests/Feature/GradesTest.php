@@ -12,50 +12,192 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class GradesTest extends TestCase{
+class GradesTest extends TestCase
+{
+    use RefreshDatabase;
 
-    use RefreshDatabase; 
+    private $group;
+    private $student;
 
-   public function setUp(): void {
-        parent::setUp(); 
+    public function setUp(): void {
+        parent::setUp();
+
         //anything you need to do before every test goes here 
-   }
+        $this->group = Group::factory()->create();
+        $this->group->save();
 
-   /** @test */
-   public function logged_out_user_cannot_see_grades_of_a_group(){  
-        $response = $this->get('/grades/1')->assertRedirect('/login'); 
-   }
+        $this->student = Student::factory()->create();
+        $this->student->save();
+    }
 
+    // TEST INDEX FUNCTION
+    /** @test */
+    public function logged_in_users_can_see_grades_of_a_group(){
+        $this->actingAsUser();
+        $response = $this->get('/grades/'.$this->group->id)->assertOk();
+    }
+    /** @test */
+    public function logged_out_user_cannot_see_grades_of_a_group(){  
+        $response = $this->get('/grades/'.$this->group->id)->assertRedirect('/login'); 
+    }
 
-
+    // TEST STORE FUNCTION
     /** @test */
     public function a_grade_can_be_added_through_form_by_teacher(){ 
         $this->actingAsTeacher(); 
-        
-        $response = $this->post('/grades/1', [
-            'subject_id' => '1', 
-            'student_id' => '1', 
-            'grade' => 95,  
-            'semester' => 2, 
-        ]); 
-        
-        $this->assertCount(1, Grade::all()); //total of one grade after the procedure 
+        $response = $this->post('/grades/'.$this->group->id, $this->data());
+        $this->assertDatabaseHas('grades', $this->data());
     }
-  
-     /** @test */
-     public function a_grade_cannot_be_added_by_user(){
+    /** @test */
+    public function a_grade_cannot_be_added_by_user(){
         $this->actingAsUser();
-        $response = $this->post('/grades/1', $this->data());
+        $response = $this->post('/grades/'.$this->group->id, $this->data());
         $this->assertDatabaseMissing('grades', $this->data());
+    }
+    /** @test */
+    public function a_grade_cannot_be_added_by_admin(){
+        $this->actingAsAdmin();
+        $response = $this->post('/grades/'.$this->group->id, $this->data());
+        $this->assertDatabaseMissing('grades', $this->data());
+    }
+    /** @test */
+    public function a_grade_can_be_added_twice_by_teacher(){ 
+        $this->actingAsTeacher(); 
+
+        // 1. Додати оцінку перший раз
+        $response = $this->post('/grades/'.$this->group->id, $this->data());
+        $this->assertDatabaseHas('grades', $this->data());
+
+        // 2. Спроба додати оцінку другий раз
+        $response = $this->post('/grades/'.$this->group->id, $this->data());
+        $this->assertCount(1, Grade::all());
     }
 
-      /** @test */
-      public function a_grade_cannot_be_added_by_admin(){
-        $this->actingAsAdmin();
-        $response = $this->post('/grades/1', $this->data());
-        $this->assertDatabaseMissing('grades', $this->data());
+    // TEST UPDATE FUNCTION
+    /** @test */
+    public function a_grade_can_be_updated_by_the_teacher_of_the_given_subject(){
+        // 1. Авторизація
+        $user = User::factory()->create(['role' => 'teacher']);
+        $this->actingAs($user);
+
+        // 2. Реєстрація викладача в БД
+        $teacher = Teacher::factory()->create(['user_id' => $user->id]);
+        $teacher->save();
+
+        // 3. Дисципліна, яку веде АВТОРИЗОВАНИЙ викладач
+        $subject = Subject::factory()->create(['teacher_id' => $teacher->id]);
+        $subject->save();
+
+        // 4. Оцінка саме з тієї дисципліни, яку веде даний викладач
+        $grade = Grade::factory()->create(['subject_id' => $subject->id, 'student_id' => $this->student->id]);
+        $grade->save();
+
+        $data = [
+            'id' => $grade->id,
+            'subject_id' => $grade->subject_id, 
+            'student_id' => $grade->student_id,
+            'semester' => $grade->semester,
+            'grade' => 95,
+        ];
+
+        $response = $this->patch('/grades/'.$this->group->id.'/'.$grade->id, $data);
+
+        $this->assertDatabaseHas('grades', $data);
+        $response->assertRedirect('/grades/'.$this->group->id);
     }
-    
+    /** @test */
+    public function a_grade_can_not_be_updated_by_the_teacher_of_another_subject(){
+        // 1. Авторизація
+        $current_user = User::factory()->create(['role' => 'none']);
+        $this->actingAs($current_user);
+
+        $another_user = User::factory()->create(['role' => 'teacher']);
+        $another_user->save();
+
+        // 2. Реєстрація викладачів в БД
+        $current_teacher = Teacher::factory()->create(['user_id' => $current_user->id]);
+        $current_teacher->save();
+
+        $another_teacher = Teacher::factory()->create(['user_id' => $another_user->id]);
+        $another_teacher->save();
+
+        // 3. Дисципліна, яку веде ІНШИЙ викладач
+        $subject = Subject::factory()->create(['teacher_id' => $another_teacher->id]);
+        $subject->save();
+
+        // 4. Оцінка з ІНШОЇ дисципліни, яку веде ІНШИЙ викладач
+        $grade = Grade::factory()->create(['subject_id' => $subject->id, 'student_id' => $this->student->id]);
+        $grade->save();
+
+        $data = [
+            'id' => $grade->id,
+            'subject_id' => $grade->subject_id, 
+            'student_id' => $grade->student_id,
+            'semester' => $grade->semester,
+            'grade' => 95,
+        ];
+
+        $response = $this->patch('/grades/'.$this->group->id.'/'.$grade->id, $data);
+        
+        $this->assertDatabaseMissing('grades', $data);
+        $response->assertRedirect('/grades/'.$this->group->id);
+    }
+
+    // TEST DESTROY FUNCTION
+    /** @test */
+    public function a_grade_can_be_deleted_by_the_teacher_of_the_given_subject(){
+        // 1. Авторизація
+        $user = User::factory()->create(['role' => 'teacher']);
+        $this->actingAs($user);
+
+        // 2. Реєстрація викладача в БД
+        $teacher = Teacher::factory()->create(['user_id' => $user->id]);
+        $teacher->save();
+
+        // 3. Дисципліна, яку веде АВТОРИЗОВАНИЙ викладач
+        $subject = Subject::factory()->create(['teacher_id' => $teacher->id]);
+        $subject->save();
+
+        // 4. Оцінка саме з тієї дисципліни, яку веде даний викладач
+        $grade = Grade::factory()->create(['subject_id' => $subject->id, 'student_id' => $this->student->id]);
+        $grade->save();
+
+        //fwrite(STDERR, print_r(Auth::user()->role, TRUE));
+
+        $response = $this->delete('/grades/'.$this->group->id.'/'.$grade->id);
+
+        $this->assertCount(0, Grade::all());
+        $response->assertRedirect('/grades/'.$this->group->id);
+    }
+    /** @test */
+    public function a_grade_can_not_be_deleted_by_the_teacher_of_another_subject(){
+        // 1. Авторизація
+        $current_user = User::factory()->create(['role' => 'teacher']);
+        $this->actingAs($current_user);
+
+        $another_user = User::factory()->create(['role' => 'teacher']);
+        $another_user->save();
+
+        // 2. Реєстрація викладачів в БД
+        $current_teacher = Teacher::factory()->create(['user_id' => $current_user->id]);
+        $current_teacher->save();
+
+        $another_teacher = Teacher::factory()->create(['user_id' => $another_user->id]);
+        $another_teacher->save();
+
+        // 3. Дисципліна, яку веде ІНШИЙ викладач
+        $subject = Subject::factory()->create(['teacher_id' => $another_teacher->id]);
+        $subject->save();
+
+        // 4. Оцінка з ІНШОЇ дисципліни, яку веде ІНШИЙ викладач
+        $grade = Grade::factory()->create(['subject_id' => $subject->id, 'student_id' => $this->student->id]);
+        $grade->save();
+
+        $response = $this->delete('/grades/'.$this->group->id.'/'.$grade->id);
+
+        $this->assertCount(1, Grade::all());
+        $response->assertRedirect('/grades/'.$this->group->id);
+    }
 
     //INPUT VALIDATION: 
     /** @test */
@@ -76,9 +218,8 @@ class GradesTest extends TestCase{
         $response->assertSessionHasErrors(['student_id']); 
         $this->assertCount(0, Grade::all()); 
     }
-
-     /** @test */
-     public function subject_id_is_required_to_add_grade(){ 
+    /** @test */
+    public function subject_id_is_required_to_add_grade(){ 
         $this->actingAsTeacher(); 
         $response = $this->post('/grades/1', 
             array_merge($this->data(), ['subject_id' => null ])
@@ -106,36 +247,29 @@ class GradesTest extends TestCase{
 
     }
 
-
-
-
-
-      // Helper functions: 
-      private function actingAsAdmin()
-      {
-          $admin = User::factory()->create(['role' => 'admin']); //we can override any of the fields inside create()
-          $this->actingAs($admin);
-      }
+    // Helper functions: 
+    private function actingAsAdmin(){
+        $admin = User::factory()->create(['role' => 'admin']); //we can override any of the fields inside create()
+        $this->actingAs($admin);
+    }
       
-      private function actingAsUser()
-      {
-          $user = User::factory()->create(); //role = none 
-          $this->actingAs($user);
-      }
+    private function actingAsUser(){
+        $user = User::factory()->create(); //role = none 
+        $this->actingAs($user);
+    }
 
-      private function actingAsTeacher(){
-            $teacher = User::factory()->create(['role' => 'teacher']);
-            $this->actingAs($teacher);
-      }
+    private function actingAsTeacher(){
+        $teacher = User::factory()->create(['role' => 'teacher']);
+        $this->actingAs($teacher);
+    }
   
-      //valid data: 
-      private function data()
-      { 
-          return [
-            'subject_id' => 1, //['required'],
-            'student_id' => 1, //['required'],
-            'grade' => 95, //['required', 'integer', 'min:0', 'max:100'],
-            'semester' => 2, //['required', 'integer', 'min:1', 'max:12'],
-          ]; 
-      }
+    //valid data: 
+    private function data(){ 
+        return [
+            'student_id' => 1,
+            'subject_id' => 1,
+            'semester' => 1,
+            'grade' => 95,
+        ]; 
+    }
 }

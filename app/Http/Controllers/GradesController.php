@@ -26,7 +26,6 @@ class GradesController extends Controller
 
     public function index(){
         $subjects = $this->subjects();
-        //dd($subjects); 
         return view('grades/index', ['group' => $this->group, 'subjects' => $subjects]);
     }
 
