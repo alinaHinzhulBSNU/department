@@ -5,7 +5,9 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Models\Teacher;
 use App\Models\Student;
+use App\Models\Subject;
 use App\Models\Group;
+use App\Models\Grade;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -114,6 +116,43 @@ class StudentsTest extends TestCase
         $this->assertCount(1, Student::all());
         $this->assertEquals($student->user->role, 'student');
         $response->assertRedirect('/');
+    }
+
+    //TEST RATING GRADE
+    /** @test */
+    public function a_student_has_correct_rating_grade(){
+        $this->actingAsUser();
+        
+        // 1. Студент
+        $user = User::factory()->create(['role' => 'student']);
+        $user->save();
+
+        $student = Student::factory()->create(['user_id' => $user->id]);
+        $student->save();
+
+        // 2. Оцінка за перший предмет
+        $first_subject = Subject::factory()->create(['credit' => 3]);
+        $first_subject->save();
+
+        $grade = Grade::factory()->create([
+            'subject_id' => $first_subject->id, 
+            'student_id' => $student->id,
+            'grade' => 90
+        ]);
+        $grade->save();
+
+        // 3. Оцінка за другий предмет
+        $second_subject = Subject::factory()->create(['credit' => 5]);
+        $second_subject->save();
+
+        $grade = Grade::factory()->create([
+            'subject_id' => $second_subject->id, 
+            'student_id' => $student->id,
+            'grade' => 70
+        ]);
+        $grade->save();
+
+        $this->assertEquals($student->rating(), 77.5);
     }
 
     // Supporting functions
