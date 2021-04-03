@@ -11,9 +11,6 @@
     <!--Add grades-->
     @can('teach')
         <a href="/grades/{{ $group->id }}/create" class="btn btn-success mb-3">Виставити бали</a>
-        <br/>
-        <a href="/grades/{{ $group->id }}/pdf" class="btn btn-warning mb-3">Завантажити відомість</a> <!-- pdf for all subjects --> 
-        
     @endcan
 
     <!--Content-->
@@ -23,28 +20,39 @@
             <thead class="thead-light">
                 <tr>
                     <th class="text-left align-middle" scope="col">Ім'я студента</th>
+                    <th class="text-center align-middle" scope="col">Форма навчання</th>
                     @foreach($subjects as $subject)
-                        <th class="text-center align-middle" scope="col">{{ $subject->name }}</th>
+                        <th class="text-center align-middle" scope="col">
+                            {{ $subject->name }}
+                            <!-- PDF for each subject separately -->
+                            @can('teach')
+                            <div>
+                                <a href="/grades/{{ $group->id }}/{{ $subject->id }}/pdf" class="btn btn-warning mb-3">
+                                    Відомість PDF
+                                </a>
+                            </div>
+                            @endcan
+                        </th>
                     @endforeach
-                    <th>Рейтинговий бал</th>
+                    <th class="text-center align-middle">Рейтинговий бал</th>
                 </tr>
             </thead>
 
             <tbody>
-                @can('teach')
-                    <tr> <!-- PDF for each subject separately --> 
-                        <td class="text-left align-middle" scope="col"></td>
-                        @foreach($subjects as $subject)
-                            <td><a href="/grades/{{ $group->id }}/{{ $subject->id }}/pdf" class="btn btn-warning mb-3">Завантажити відомість</a> </td>
-                        @endforeach
-                        <td class="text-left align-middle" scope="col"></td>
-                    </tr>
-                @endcan
-               
                 @foreach($group->students as $student)
                 <tr>
                     <!--Name of student-->
                     <td class="text-left align-middle">{{ $student->user->name }}</td>
+
+                    <!--Payment method-->
+                    <td class="text-center align-middle">
+                        @if($student->has_grant)
+                            <p class="font-weight-bold text-secondary">ДЗ</p>
+                        @else
+                            <p class="font-weight-bold text-primary">К</p>
+                        @endif
+
+                    </td>
 
                     <!--Grades for subjects-->
                     @foreach($subjects as $subject)
@@ -88,7 +96,19 @@
         </table>
     </div>
 
+    <!--Download PDF for all subjects-->
+    @can('teach')
+        <!-- pdf for all subjects --> 
+        <div>
+            <a href="/grades/{{ $group->id }}/pdf" class="btn btn-primary mb-3">
+                Відомість PDF (всі дисципліни)
+            </a>
+        </div>
+    @endcan
 
 
-    <a href="/groups" class="btn btn-warning mb-3">Повернутися до списку груп</a>
+    <a href="/groups" class="btn btn-secondary mb-3">
+        <i class="fas fa-arrow-circle-left"></i> 
+        <span>Назад</span>
+    </a>
 @endsection

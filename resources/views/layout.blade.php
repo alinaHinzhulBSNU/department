@@ -28,7 +28,6 @@
         <header>
             <nav class="navbar navbar-expand-lg navbar-light bg-light pb-3 pt-3"> 
                 <a class="navbar-brand" href="/">
-                    <i class="fas fa-desktop"></i>
                     <span class="font-weight-bold">Факультет комп'ютерних наук</span>
                 </a>
 
@@ -69,7 +68,7 @@
         </header>
 
         <!--Content-->
-        <section class="main-content text-center">
+        <section class="main-content text-center pb-3 pt-3">
             <div class="row justify-content-center p-0 m-0">
                 <div class="col-md-10">
                     @yield('content')

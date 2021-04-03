@@ -30,251 +30,6 @@ class GradesController extends Controller
         return view('grades/index', ['group' => $this->group, 'subjects' => $subjects]);
     }
 
-    // --------------------------- PDF functionality --------------------------
-    function pdf(){
-        $pdf = \App::make('dompdf.wrapper'); 
-        $pdf->loadHTML($this->convertGradesToHtmlAllSubjects());
-        //loadHTML is the func that converts html data to pdf  
-        return $pdf->stream();
-        //stream func allows to show pdf file in browser 
-    }
-
-    function pdfOneSubject(){
-
-        $this->subject = Subject::find(\request()->route('subject_id'));
-        $pdf = \App::make('dompdf.wrapper'); 
-        $pdf->loadHTML($this->convertGradesToHtmlCurrentSubject());
-        return $pdf->stream(); 
-    }
-
-    function convertGradesToHtmlCurrentSubject(){
-        //to use another font, we have to fix the encoding! 
-        $output = '
-        <head>
-            <style>
-                body { 
-                    font-family: DejaVu Sans 
-                }
-    
-                .footer {
-                    width: 100%;
-                    text-align: right;
-                    position: fixed;
-                    bottom: 15px;
-                    right: 20px; 
-                }
-                .pagenum:before {
-                    content: counter(page); 
-                    
-                }
-                table {
-                    width: 97%; 
-                    border-collapse: collapse; 
-                    border: 0px;
-                }
-    
-                .page-break {
-                    page-break-before: always;
-                    }
-                @page { margin: 20px 30px 40px 50px; }
-    
-                th {
-                    border: 1px solid; 
-                    padding:12px;
-                    width="30%; 
-                }
-    
-                td {
-                    border: 1px solid; 
-                    padding: 12px;
-                    text-align: center; 
-                    width: 30%; 
-                }
-            </style> 
-        </head> 
-
-        <body>
-        <h3 align="center">Факультет Комп\'ютерних Наук</h3>
-        <h3 align="center">Група '.$this->group->number.'</h3>
-        <table>
-        <tr>
-            <th>Студент</th>
-            <th><p>'.$this->subject->name.'</p></th>
-        </tr>'; 
-        //table rows counter:
-        $c = 3; //so that first page has fewer rows than the rest
-        //for ($x = 0; $x <= 14; $x++) {  //for testing pagination 
-            foreach($this->group->students as $student ){ 
-                $c++; 
-                $output .= '
-                <tr>
-                    <td>
-                    '.$student->user->name .'
-                    </td>'; 
-
-                    //open cell 
-                    $output .= '<td>'; 
-                    foreach($student->grades as $grade){
-                        if($grade->subject->id === $this->subject->id){
-                        $output .= $grade->grade; 
-                        
-                        }
-                    }    
-                    $output .= '</td>' ;  //if there is a grade, fill it in, if there isn't - leave blank         
-
-                $output .= '
-                </tr>
-                '; 
-
-                if($c == 19){ 
-                    $output .= '
-                        </table> 
-                            <div class="footer" style="margin-bottom: 20px;">
-                                <span class="pagenum"></span>
-                            </div>
-                        <div class="page-break"></div>
-                        <table> 
-                        <tr>
-                        <th>Студент</th>'; 
-            
-                    $output .= '<th>'.$this->subject->name.'</th>'; 
-                     
-                    $output .= '</tr>'; 
-                    $c=0; 
-                }
-
-            }
-        //}//regular for 
-        $output .= '
-        </table> 
-            <div class="footer" style="margin-bottom: 20px;">
-                <span class="pagenum"></span>
-            </div>
-        </body>'; 
-        return $output; 
-
-    }
-
-    //for ALL subjects:   
-    function convertGradesToHtmlAllSubjects(){
-        $subjects = $this->subjects();
-        // would be good to make the subject names display vertically 
-        $output = '
-        <head>
-        <style>
-            body { 
-                font-family: DejaVu Sans 
-            }
-
-            .footer {
-                width: 100%;
-                text-align: right;
-                position: fixed;
-                bottom: 15px;
-                right: 20px; 
-            }
-            .pagenum:before {
-                content: counter(page); 
-                
-            }
-            table {
-                width: 97%; 
-                border-collapse: collapse; 
-                border: 0px;
-            }
-
-            .page-break {
-                page-break-before: always;
-                }
-            @page { margin: 20px 30px 40px 50px; }
-
-            th {
-                border: 1px solid; 
-                padding:12px;
-                width="30%; 
-            }
-
-            td {
-                border: 1px solid; 
-                padding: 12px;
-                text-align: center; 
-                width: 30%; 
-            }
-        </style>
-        </head> 
-        <body>
-
-        <h3 align="center">Факультет Комп\'ютерних Наук</h3>
-        <h3 align="center">Група '.$this->group->number.'</h3>
-        <table>
-        <tr>
-            <th>Студент</th>'; 
-
-        foreach($subjects as $subject ){
-            $output .= '<th>'.$subject->name.'</th>'; 
-        }   
-        $output .= '</tr>'; 
-
-        $c = 2;
-        //for ($x = 0; $x <= 14; $x++) { 
-            foreach($this->group->students as $student ){ 
-            
-                $c++; 
-                $output .= '
-                <tr>
-                    <td>
-                    '.$student->user->name .'
-                    </td>'; 
-
-                    foreach($subjects as $subject ){
-                        $output .= '<td>
-                            '; 
-                        foreach($student->grades as $grade){
-                            if($grade->subject->id === $subject->id){
-                            $output .= $grade->grade; 
-                            }
-                        } 
-                        $output .= '</td>' ;
-                    } 
-
-                $output .= '
-                </tr>
-                ';
-    
-                if($c == 15){
-                    $output .= '
-                        </table> 
-                            <div class="footer" style="margin-bottom: 20px;">
-                                <span class="pagenum"></span>
-                            </div>
-                        <div class="page-break"></div>
-                        <table> 
-                        <tr>
-                        <th>Студент</th>'; 
-
-                    foreach($subjects as $subject ){
-                        $output .= '<th>'.$subject->name.'</th>'; 
-                    }   
-                    $output .= '</tr>'; 
-                    $c=0; 
-                }
-            
-            }
-        //} //regular for
-        $output.='</table> 
-            <div class="footer" style="margin-bottom: 20px;">
-                <span class="pagenum"></span>
-            </div>
-       </body> 
-        '; 
-
-        return $output; 
-    }
-
-    // --------------------------- end of PDF functionality --------------------------
-
-
-
     public function create(){
         // лише викладачі можуть виставляти оцінки 
         if(Gate::allows('teach')){
@@ -345,6 +100,48 @@ class GradesController extends Controller
 
         return redirect('/grades/'.$this->group->id);
     }
+
+    //GET ALL SUBJECTS
+    private function subjects(){
+        $grades = Grade::all();
+        $subjects = array();
+
+        foreach($this->group->students as $student){
+            foreach($grades as $grade){
+                if($grade->student->id === $student->id){
+                    $subjects[] = $grade->subject;
+                }
+            }
+        }
+
+        $subjects = array_unique($subjects);
+
+        return $subjects;
+    }
+
+    // --------------------------- PDF functionality --------------------------
+    function pdfManySubjects(){
+        $pdf = PDF::loadView('grades/pdf_many', [
+            'group' => $this->group,
+            'subjects' => $this->subjects(),
+        ]);
+
+        //loadHTML is the func that converts html data to pdf  
+        return $pdf->stream();
+        
+    }
+
+    function pdfOneSubject(){
+        $this->subject = Subject::find(\request()->route('subject_id'));
+
+        $pdf = PDF::loadView('grades/pdf_one', [
+            'group' => $this->group,
+            'subject' => $this->subject
+        ]);
+
+        return $pdf->stream(); 
+    }
+    // --------------------------- end of PDF functionality --------------------------
     
     //VALIDATE
     private function validateData($data){ 
@@ -365,23 +162,5 @@ class GradesController extends Controller
             'semester.min' => 'Семестр не може бути менше 1!',
             'semester.max' => 'Семестр не може бути більше 12!',
         ]);
-    }
-
-    //GET ALL SUBJECTS
-    private function subjects(){
-        $grades = Grade::all();
-        $subjects = array();
-
-        foreach($this->group->students as $student){
-            foreach($grades as $grade){
-                if($grade->student->id === $student->id){
-                    $subjects[] = $grade->subject;
-                }
-            }
-        }
-
-        $subjects = array_unique($subjects);
-
-        return $subjects;
     }
 }

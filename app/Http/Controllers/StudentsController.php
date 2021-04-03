@@ -120,23 +120,6 @@ class StudentsController extends Controller
         }
     }
 
-    //VALIDATE
-    private function validateData($data){
-        return $this->validate($data, [
-            'group_id' => ['required'],
-            'user_id' => ['required'],
-            'is_class_leader' => ['required'], 
-            'has_grant' => ['required'], 
-            'has_social_grant' => ['required'], 
-        ], [
-            'group_id.required' => 'Номер групи має бути вказаний!',
-            'user_id.required' => 'Відповідний обліковий запис має бути обраний!',
-            'is_class_leader.required' => 'Потрібно вказати, чи є студент старостою!',
-            'has_grant.required' => 'Потрібно вказати, чи має студент стипендію!',
-            'has_social_grant' => ['Потрібно вказати, чи має студент соціальну стипендію!'], 
-        ]);
-    }
-
     //SEARCH
     public function search(){
         $students = Student::all();
@@ -155,5 +138,22 @@ class StudentsController extends Controller
         }
 
         return view('students/index', ['students' => $students]);
+    }
+
+    //VALIDATE
+    private function validateData($data){
+        return $this->validate($data, [
+            'group_id' => ['required'],
+            'user_id' => ['required'],
+            'is_class_leader' => ['required'], 
+            'has_grant' => ['required'], 
+            'has_social_grant' => ['required'], 
+        ], [
+            'group_id.required' => 'Номер групи має бути вказаний!',
+            'user_id.required' => 'Відповідний обліковий запис має бути обраний!',
+            'is_class_leader.required' => 'Потрібно вказати, чи є студент старостою!',
+            'has_grant.required' => 'Потрібно вказати, чи має студент стипендію!',
+            'has_social_grant' => ['Потрібно вказати, чи має студент соціальну стипендію!'], 
+        ]);
     }
 }

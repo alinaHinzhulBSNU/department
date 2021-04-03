@@ -33,11 +33,13 @@ function sortTableByColumn(table, column, asc = false){
 }
 
 document.querySelectorAll("#gradebook th").forEach(headerCell => {
-    headerCell.addEventListener("click", () => {
-        const table = document.querySelector("#gradebook");
-        const colIndex = Array.prototype.indexOf.call(headerCell.parentElement.children, headerCell);
-        const isAscending = headerCell.classList.contains("th-sort-asc");
-
-        sortTableByColumn(table, colIndex , !isAscending);
+    headerCell.addEventListener("click", (e) => {
+        if(e.target.tagName == "TH"){ // Не робити сортування при натисненні на кнопку, що знаходиться в шапці таблиці
+            const table = document.querySelector("#gradebook");
+            const colIndex = Array.prototype.indexOf.call(headerCell.parentElement.children, headerCell);
+            const isAscending = headerCell.classList.contains("th-sort-asc");
+    
+            sortTableByColumn(table, colIndex , !isAscending);
+        }
     });
 });

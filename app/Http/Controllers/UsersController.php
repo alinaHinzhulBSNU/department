@@ -60,18 +60,6 @@ class UsersController extends Controller
             return redirect('/');
         }
     }
-    
-    //VALIDATE
-    private function validateData($data){
-        return $this->validate($data, [
-            'name' => ['required', 'min:3'],
-            'role' => ['required'],
-        ], [
-            'name.required' => 'ПІБ має бути заповнене!',
-            'name.min' => 'ПІБ має бути довше 3 символів!',
-            'role.required' => 'Роль має бути обрана!',
-        ]);
-    }
 
     //SEARCH
     public function search(){
@@ -95,5 +83,17 @@ class UsersController extends Controller
         }else{
             return redirect('/');
         }
+    }
+
+    //VALIDATE
+    private function validateData($data){
+        return $this->validate($data, [
+            'name' => ['required', 'min:3'],
+            'role' => ['required'],
+        ], [
+            'name.required' => 'ПІБ має бути заповнене!',
+            'name.min' => 'ПІБ має бути довше 3 символів!',
+            'role.required' => 'Роль має бути обрана!',
+        ]);
     }
 }
