@@ -53,7 +53,7 @@ class GroupsTest extends TestCase
         $group = Group::factory()->create();
         $group->save();
 
-        $data = array_merge($this->data(), ['id' => $group->id]);
+        $data = array_merge($this->dataUpdate(), ['id' => $group->id]);
 
         $response = $this->patch('/groups/'.$group->id, $data);
 
@@ -68,7 +68,7 @@ class GroupsTest extends TestCase
         $group = Group::factory()->create();
         $group->save();
 
-        $data = array_merge($this->data(), ['id' => $group->id]);
+        $data = array_merge($this->dataUpdate(), ['id' => $group->id]);
 
         $response = $this->patch('/groups/'.$group->id, $data);
 
@@ -172,6 +172,16 @@ class GroupsTest extends TestCase
     {
         return [
             "number" => "308",
+            "course" => 1,
+            'major' => "testing",
+            'start_year' => 2018,
+            'end_year' => 2022,
+        ];
+    }
+
+    private function dataUpdate()
+    {
+        return [
             "course" => 1,
             'major' => "testing",
             'start_year' => 2018,
