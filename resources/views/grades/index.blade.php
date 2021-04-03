@@ -20,7 +20,7 @@
             <thead class="thead-light">
                 <tr>
                     <th class="text-left align-middle" scope="col">Ім'я студента</th>
-                    <th class="text-center align-middle" scope="col">Форма навчання</th>
+                    <th class="text-center align-middle" scope="col">Стипендія</th>
                     @foreach($subjects as $subject)
                         <th class="text-center align-middle" scope="col">
                             {{ $subject->name }}
@@ -46,10 +46,10 @@
 
                     <!--Payment method-->
                     <td class="text-center align-middle">
-                        @if($student->has_grant)
-                            <p class="font-weight-bold text-secondary">ДЗ</p>
-                        @else
-                            <p class="font-weight-bold text-primary">К</p>
+                        @if($student->has_grant || $student->has_social_grant)
+                            <h3 class="text-success">
+                                <i class="far fa-check-circle"></i>
+                            </h3>
                         @endif
 
                     </td>
