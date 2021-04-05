@@ -1,4 +1,7 @@
 <?php
+/**
+ * Файл з контролером для даних про користувачів
+ */
 
 namespace App\Http\Controllers;
 
@@ -6,13 +9,27 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 
+/**
+ * Контролер для даних про користувачів
+ */
 class UsersController extends Controller
 {
+    /**
+     * Створення нового екземпляру UsersController
+     * 
+     * Перевірка авторизації
+     * 
+     * @return void
+     */
     public function __construct(){
         $this->middleware('auth');
     }
 
-    //Route::get('/users', [\App\Http\Controllers\UsersController::class, 'index']);
+    /**
+     * Перегляд списку користувачів
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function index(){
         if(Gate::allows('admin')){
             $users = User::all()->sortBy('name');
@@ -22,7 +39,15 @@ class UsersController extends Controller
         }
     }
 
-    //Route::get('/users/{id}/edit', [\App\Http\Controllers\UsersController::class, 'edit']);
+    /**
+     * Перехід на форму редагування користувача
+     * 
+     * Перейти на форму редагування користувача може лише адміністратор.
+     * 
+     * @param mixed $id
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function edit($id){
         if(Gate::allows('admin')){
             $user = User::find($id);
@@ -32,7 +57,15 @@ class UsersController extends Controller
         }
     }
 
-    //Route::patch('/users/{id}', [\App\Http\Controllers\UsersController::class, 'update']);
+    /**
+     * Збереження відредагованих даних про користувача
+     * 
+     * Зберігати відредаговані дані про користувача може лише адміністратор.
+     * 
+     * @param mixed $id
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function update($id){
         if(Gate::allows('admin')){
             $user = User::find($id);
@@ -49,7 +82,15 @@ class UsersController extends Controller
         }
     }
 
-    //Route::delete('/users/{id}', [\App\Http\Controllers\UsersController::class, 'destroy']);
+    /**
+     * Видалення даних про користувача
+     * 
+     * Видаляти дані про користувача може лише адміністратор.
+     * 
+     * @param mixed $id
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function destroy($id){
         if(Gate::allows('admin')){
             $user = User::find($id);
@@ -61,7 +102,13 @@ class UsersController extends Controller
         }
     }
 
-    //SEARCH
+    /**
+     * Пошук користувача за ПІБ
+     * 
+     * Шукати користувачів за ПІБ може лише адміністратор.
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function search(){
         if(Gate::allows('admin')){
             $users = User::all();
@@ -85,7 +132,13 @@ class UsersController extends Controller
         }
     }
 
-    //VALIDATE
+    /**
+     * Валідація даних про користувачів, отриманих з форм редагування та додавання
+     * 
+     * @param mixed $data
+     * 
+     * @return mixed
+     */
     private function validateData($data){
         return $this->validate($data, [
             'name' => ['required', 'min:3'],

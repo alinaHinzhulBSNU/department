@@ -1,4 +1,9 @@
 <?php
+/**
+ * Файл з контролером для даних про журнал оцінок
+ * 
+ * @author Alina Hinzhul, Olena Groza
+ */
 
 namespace App\Http\Controllers;
 
@@ -10,27 +15,62 @@ use App\Models\Grade;
 use App\Models\Teacher;
 use App\Models\Subject;
 
-use DB; 
-use PDF; //alias of the plugin class we've installed (DomPdf)  
+/**
+ * Alias of the plugin class we've installed (DomPdf)
+ */
+use PDF;  
 
+/**
+ * Контролер для даних про оцінки
+ */
 class GradesController extends Controller
 {
-    private $group;// група, журнал якої переглядають
+    /**
+     * Студентська група, журнал якої переглядаємо
+     * 
+     * @var Group $group
+     */
+    private $group;
 
-    private $subject; // subject to load PDF for 
+    /**
+     * Subject to load PDF for
+     *  
+     * @var Subject $subject
+     */
+    private $subject;
 
+    /**
+     * Створення нового екземпляру GradesController
+     * 
+     * Перевірка авторизації.
+     * 
+     * Отримання групи, id якої вказано в запиті.
+     * 
+     * @return void
+     */
     public function __construct(){
         $this->middleware('auth');
         $this->group = Group::find(\request()->route('group_id'));
     }
 
+    /**
+     * Перегляд журналу
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function index(){
         $subjects = $this->subjects();
         return view('grades/index', ['group' => $this->group, 'subjects' => $subjects]);
     }
 
+    /**
+     * Перехід на форму створення оцінки
+     * 
+     * Ставити оцінки можуть лише викладачі.
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function create(){
-        // лише викладачі можуть виставляти оцінки 
         if(Gate::allows('teach')){
             $subjects = Auth::user()->teacher->subjects;
             return view('grades/create', ['group' => $this->group, 'subjects' => $subjects]);
@@ -39,12 +79,18 @@ class GradesController extends Controller
         return redirect('/grades/'.$this->group->id);
     }
 
+    /**
+     * Збереження виставленої оцінки
+     * 
+     * Не можна виставити дві або більше оцінки з однієї дисципліни одному студенту.
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function store(){
         if(Gate::allows('teach')){
             $grade = new Grade();
             $data = $this->validateData(\request());
 
-            // не виставляти дві або більше оцінки одному студенту з тої самої дисципліни
             $is_grade_unique = Grade::where('student_id', $data['student_id'])
                                     ->where('subject_id', $data['subject_id'])
                                     ->exists();
@@ -62,10 +108,17 @@ class GradesController extends Controller
         return redirect('/grades/'.$this->group->id);
     }
 
+    /**
+     * Перехід на форму редагування оцінки
+     * 
+     * Виставити оцінку з певної дисципліни може лише той викладач, що її веде.
+     * Дана логіка описана в GradePolicy.
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function edit(){
         $grade = Grade::find(\request()->route('id'));
 
-        // виставити оцінку з певної дисципліни може лише той викладач, що її веде (див. GradePolicy)
         if(Auth::user()->can('update', $grade, Grade::class)) {
             return view('grades/edit', ['grade' => $grade, 'group' => $this->group]);
         }
@@ -73,6 +126,14 @@ class GradesController extends Controller
         return redirect('/grades/'.$this->group->id);
     }
 
+    /**
+     * Збереження відредагованої оцінки
+     * 
+     * Відредагувати оцінку може лише той викладач, що веде вказану дисципліну.
+     * Дана логіка описана в GradePolicy.
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function update(){
         $grade = Grade::find(\request()->route('id'));
 
@@ -90,6 +151,14 @@ class GradesController extends Controller
         return redirect('/grades/'.$this->group->id);
     }
 
+    /**
+     * Видалення виставленої оцінки
+     * 
+     * Видалити оцінку може лише той викладач, що веде вказану дисципліну.
+     * Дана логіка описана в GradePolicy.
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function destroy(){
         $grade = Grade::find(\request()->route('id'));
 
@@ -100,7 +169,13 @@ class GradesController extends Controller
         return redirect('/grades/'.$this->group->id);
     }
 
-    //GET ALL SUBJECTS
+    /**
+     * Отримання всіх дисциплін
+     * 
+     * Всі дисципліни, що були у студентів даної групи.
+     * 
+     * @return array $subjects
+     */
     private function subjects(){
         $grades = Grade::all();
         $subjects = array();
@@ -118,18 +193,34 @@ class GradesController extends Controller
         return $subjects;
     }
 
+
     // --------------------------- PDF functionality --------------------------
+    /**
+     * Створення відомості по всім дисциплінам
+     * 
+     * Створення PDF документу, що містить дані про оцінки з усіх дисциплін.
+     * Може завантажити лише викладач.
+     * 
+     * @return PDF
+     */
     function pdfManySubjects(){
         $pdf = PDF::loadView('grades/pdf_many', [
             'group' => $this->group,
             'subjects' => $this->subjects(),
         ]);
-
-        //loadHTML is the func that converts html data to pdf  
+ 
         return $pdf->stream();
         
     }
 
+    /**
+     * Створення відомості з однієї дисципліни
+     * 
+     * Створення PDF документу, що містить дані про оцінки з однієї дисципліни.
+     * Може завантажити лише викладач.
+     * 
+     * @return PDF
+     */
     function pdfOneSubject(){
         $this->subject = Subject::find(\request()->route('subject_id'));
 
@@ -142,7 +233,16 @@ class GradesController extends Controller
     }
     // --------------------------- end of PDF functionality --------------------------
     
-    //VALIDATE
+
+    /**
+     * Валідація даних про оцінки, які отримані з форм редагування та додавання
+     * 
+     * Використовується як для створених, так і для відредагованих даних.
+     * 
+     * @param mixed $data
+     * 
+     * @return mixed
+     */
     private function validateData($data){ 
         return $this->validate($data, [
             'subject_id' => ['required'],

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Файл з контролером для даних про викладачів
+ */
 
 namespace App\Http\Controllers;
 
@@ -7,13 +10,27 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\Teacher;
 use App\Models\User;
 
+/**
+ * Контролер для даних про викладачів
+ */
 class TeachersController extends Controller
 {
+    /**
+     * Створення нового екземпляру TeachersController
+     * 
+     * Перевірка авторизації
+     * 
+     * @return void
+     */
     public function __construct(){
         $this->middleware('auth');
     }
 
-    //Route::get('/teachers', [\App\Http\Controllers\TeachersController::class, 'index']);
+    /**
+     * Перегляд списку всіх викладачів
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function index(){
         if(Gate::allows('admin')){
             $teachers = Teacher::all()->sortBy('department');
@@ -23,7 +40,13 @@ class TeachersController extends Controller
         }
     }
 
-    //Route::get('/teachers/create', [\App\Http\Controllers\TeachersController::class, 'create']);
+    /**
+     * Перехід на сторінку створення даних про викладача
+     * 
+     * Створювати дані про викладача може лише адміністратор.
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function create(){
         if(Gate::allows('admin')){
             $roles = config('enums.roles');
@@ -35,7 +58,15 @@ class TeachersController extends Controller
         }
     }
 
-    //Route::post('/teachers', [\App\Http\Controllers\TeachersController::class, 'store']);
+    /**
+     * Збереження даних про викладача
+     * 
+     * Зберігати дані про викладача може лише адміністратор.
+     * 
+     * @param Request $request
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function store(Request $request){
         if(Gate::allows('admin')){
             //add data to teachers table
@@ -59,7 +90,15 @@ class TeachersController extends Controller
         }
     }
 
-    //Route::get('/teachers/{id}/edit', [\App\Http\Controllers\TeachersController::class, 'edit']);
+    /**
+     * Перехід на форму редагування даних про викладача
+     * 
+     * Редагувати дані про викладача може лише адміністратор.
+     * 
+     * @param mixed $id
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function edit($id){
         if(Gate::allows('admin')){
             $teacher = Teacher::find($id);
@@ -71,7 +110,15 @@ class TeachersController extends Controller
         }
     }
 
-    //Route::patch('/teachers/{id}', [\App\Http\Controllers\TeachersController::class, 'update']);
+    /**
+     * Збереження відредагованих даних про викладача
+     * 
+     * Зберігати відредаговані дані про викладача може лише адміністратор.
+     * 
+     * @param mixed $id
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function update($id){
         if(Gate::allows('admin')){
             $teacher = Teacher::find($id);
@@ -89,7 +136,15 @@ class TeachersController extends Controller
         }
     }
 
-    //Route::delete('/teachers/{id}', [\App\Http\Controllers\TeachersController::class, 'destroy']);
+    /**
+     * Видалення даних про викладача
+     * 
+     * Лише адміністратор може видалити дані про викладача.
+     *  
+     * @param mixed $id
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function destroy($id){
         if(Gate::allows('admin')){
             //delete data from teachers table 
@@ -107,7 +162,13 @@ class TeachersController extends Controller
         }
     }
     
-    //VALIDATE
+    /**
+     * Валідація даних про викладача, отриманих з форм редагування та додавання
+     * 
+     * @param mixed $data
+     * 
+     * @return mixed
+     */
     private function validateData($data){
         return $this->validate($data, [
             'degree' => ['required', 'min:3'],

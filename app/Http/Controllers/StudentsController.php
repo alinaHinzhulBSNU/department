@@ -1,4 +1,9 @@
 <?php
+/**
+ * Файл з контролером для даних про студентів
+ * 
+ * @author Olena Groza
+ */
 
 namespace App\Http\Controllers;
 
@@ -8,14 +13,28 @@ use App\Models\User;
 use App\Models\Group; 
 use App\Models\Student; 
 
+/**
+ * Контролер для даних про студентів
+ */
 class StudentsController extends Controller
 {
    
+    /**
+     * Створення нового екземпляру StudentsController
+     * 
+     * Перевірка авторизації
+     * 
+     * @return void
+     */
     public function __construct(){
         $this->middleware('auth');
     }
 
-    //Route::get('/students', [\App\Http\Controllers\StudentsController::class, 'index']);
+    /**
+     * Перегляд списку всіх студентів
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function index()
     {
         //are visible to all? (if not - Add Gate!)
@@ -24,7 +43,14 @@ class StudentsController extends Controller
         return view('students/index', ['students' => $students, 'users' => $users]); 
     }
 
-    //Route::get('/students/create', [\App\Http\Controllers\StudentsController::class, 'create']);
+    /**
+     * Перехід на сторінку створення даних про студента
+     * 
+     * Лише адміністратор може перейти на цю сторінку.
+     * Запис про студента можна створити на базі того облікового запису, що ще не належить студенту.
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function create()
     {
         if(Gate::allows('admin')){
@@ -37,7 +63,15 @@ class StudentsController extends Controller
         }
     }
 
-    //Route::post('/students', [\App\Http\Controllers\StudentsController::class, 'store']);
+    /**
+     * Збереження даних про студента
+     * 
+     * Лише адміністратор може зберегти дані про студента.
+     * 
+     * @param Request $request
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function store(Request $request)
     {
         if(Gate::allows('admin')){
@@ -66,7 +100,15 @@ class StudentsController extends Controller
         }
     }
 
-    //Route::get('/students/{id}/edit', [\App\Http\Controllers\StudentsController::class, 'edit']);
+    /**
+     * Перейти на сторінку редагування даних про студента
+     * 
+     * Відредагувати дані про студента може лише адміністратор.
+     * 
+     * @param mixed $id
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function edit($id)
     {
         if(Gate::allows('admin')){
@@ -79,7 +121,15 @@ class StudentsController extends Controller
         }
     }
 
-    //Route::patch('/students/{id}', [\App\Http\Controllers\StudentsController::class, 'update']);
+    /**
+     * Збереження відредагованих даних про студентів
+     * 
+     * Зберігати відредаговані дані може лише адміністратор.
+     * 
+     * @param mixed $id
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function update($id)
     {
         if(Gate::allows('admin')){
@@ -101,7 +151,16 @@ class StudentsController extends Controller
         }
     }
 
-    //Route::delete('/students/{id}', [\App\Http\Controllers\StudentsController::class, 'destroy']);
+    /**
+     * Видалення даних про студента
+     * 
+     * Видаляти дані про студента може лише адміністратор.
+     * При видаленні роль student змінюється на none.
+     * 
+     * @param mixed $id
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function destroy($id)
     {
         if(Gate::allows('admin')){
@@ -120,7 +179,11 @@ class StudentsController extends Controller
         }
     }
 
-    //SEARCH
+    /**
+     * Пошук даних про студента за ПІБ
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function search(){
         $students = Student::all();
         $name =  \request()->input('name');
@@ -140,7 +203,13 @@ class StudentsController extends Controller
         return view('students/index', ['students' => $students]);
     }
 
-    //VALIDATE
+    /**
+     * Валідація даних про студента, отриманих з форм редагування та додавання
+     * 
+     * @param mixed $data
+     * 
+     * @return mixed
+     */
     private function validateData($data){
         return $this->validate($data, [
             'group_id' => ['required'],

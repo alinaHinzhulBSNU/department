@@ -1,4 +1,9 @@
 <?php
+/**
+ * Файл з контролером для даних про студентські групи
+ * 
+ * @author Alina Hinzhul
+ */
 
 namespace App\Http\Controllers;
 
@@ -6,19 +11,39 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Group;
 
+/**
+ * Контролер для даних про студентські групи
+ */
 class GroupsController extends Controller
 {
+    /**
+     * Створення нового екземпляру GroupsController
+     * 
+     * Перевірка авторизації.
+     * 
+     * @return void
+     */
     public function __construct(){
         $this->middleware('auth');
     }
 
-    //Route::get('/groups', [\App\Http\Controllers\GroupsController::class, 'index']);
+    /**
+     * Перегляд списку студентських груп
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function index(){
         $groups = Group::all()->sortBy('number');
         return view('groups/index', ['groups' => $groups]);
     }
 
-    //Route::get('/groups/create', [\App\Http\Controllers\GroupsController::class, 'create']);
+    /**
+     * Перехід на форму створення студентської групи
+     * 
+     * Лише адміністратор може створити дані про студентську групу.
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function create(){
         if(Gate::allows('admin')){
             return view('groups/create');
@@ -27,7 +52,15 @@ class GroupsController extends Controller
         }
     }
 
-    //Route::post('/groups', [\App\Http\Controllers\GroupsController::class, 'store']);
+    /**
+     * Збереження створеної групи
+     * 
+     * Лише адміністратор може зберегти дані про створену групу.
+     * 
+     * @param Request $request
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function store(Request $request){
         if(Gate::allows('admin')){
             $group = new Group();
@@ -46,7 +79,15 @@ class GroupsController extends Controller
         return redirect('/groups');
     }
 
-    //Route::get('/groups/{id}/edit', [\App\Http\Controllers\GroupsController::class, 'edit']);
+    /**
+     * Перехід на форму редагування групи
+     * 
+     * Перейти на форму редагування може лише адміністратор.
+     * 
+     * @param mixed $id
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function edit($id){
         if(Gate::allows('admin')){
             $group = Group::find($id);
@@ -56,7 +97,15 @@ class GroupsController extends Controller
         }
     }
 
-    //Route::patch('/groups/{id}', [\App\Http\Controllers\GroupsController::class, 'update']);
+    /**
+     * Збереження відредагованих даних про групу
+     * 
+     * Зберегти відредаговані дані може лише адміністратор.
+     * 
+     * @param mixed $id
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function update($id){
         if(Gate::allows('admin')){
             $group = Group::find($id);
@@ -73,7 +122,15 @@ class GroupsController extends Controller
         return redirect('/groups');
     }
 
-    //Route::delete('/groups/{id}', [\App\Http\Controllers\GroupsController::class, 'destroy']);
+    /**
+     * Видалення даних про групу
+     * 
+     * Видалити дані про групу може лише адміністратор.
+     * 
+     * @param mixed $id
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function destroy($id){
         if(Gate::allows('admin')){
             $group = Group::find($id);
@@ -83,7 +140,13 @@ class GroupsController extends Controller
         return redirect('/groups');
     }
 
-    //SEARCH
+    /**
+     * Пошук групи
+     * 
+     * Пошук може відбуватися як за курсом і спеціальністю, так і за кожним з цих параметрів окремо.
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function search(){
         $groups = Group::all()->sortBy('number');
         $major =  \request()->input('major');
@@ -128,6 +191,13 @@ class GroupsController extends Controller
     }
 
     //VALIDATE
+    /**
+     * Валідація створених даних про студентську групу
+     * 
+     * @param mixed $data
+     * 
+     * @return mixed
+     */
     private function validateCreatedData($data){
         return $this->validate($data, [
             'number' => ['required', 'min:3', 'unique:groups'],
@@ -150,7 +220,15 @@ class GroupsController extends Controller
         ]);
     }
 
-    // Інші правила валідації при редагуванні
+    /**
+     * Валідація відредагованих даних про студентську групу
+     * 
+     * Інші правила валідації при редагуванні даних.
+     * 
+     * @param mixed $data
+     * 
+     * @return mixed
+     */
     private function validateUpdatedData($data){
         return $this->validate($data, [
             'course' => ['required', 'integer', 'max:6'],

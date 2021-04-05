@@ -1,4 +1,9 @@
 <?php
+/**
+ * Файл з контролером для даних про дисципліни
+ * 
+ * @author Alina Hinzhul
+ */
 
 namespace App\Http\Controllers;
 
@@ -7,13 +12,27 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\Subject;
 use App\Models\Teacher;
 
+/**
+ * Контролер для даних про дисципліни
+ */
 class SubjectsController extends Controller
 {
+    /**
+     * Створення нового екземпляру SubjectsController
+     * 
+     * Перевірка авторизації.
+     * 
+     * @return void
+     */
     public function __construct(){
         $this->middleware('auth');
     }
 
-    //Route::get('/subjects', [\App\Http\Controllers\SubjectsController::class, 'index']);
+    /**
+     * Перегляд списку всіх дисциплін
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function index(){
         if(Gate::allows('admin')){
             $subjects = Subject::all()->sortBy('name');
@@ -23,7 +42,13 @@ class SubjectsController extends Controller
         }
     }
 
-    //Route::get('/subjects/create', [\App\Http\Controllers\SubjectsController::class, 'create']);
+    /**
+     * Перехід на форму створення даних про дисципліну
+     * 
+     * Лише адміністратор може додавати дані про дисципліну.
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function create(){
         if(Gate::allows('admin')){
             $teachers = Teacher::all()->sortBy('degree');
@@ -33,7 +58,15 @@ class SubjectsController extends Controller
         }
     }
 
-    //Route::post('/subjects', [\App\Http\Controllers\SubjectsController::class, 'store']);
+    /**
+     * Збереження даних про дисципліну
+     * 
+     * Лише адміністратор може зберігати дані про дисципліну.
+     * 
+     * @param Request $request
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function store(Request $request){
         if(Gate::allows('admin')){
             $subject = new Subject();
@@ -53,7 +86,15 @@ class SubjectsController extends Controller
         }
     }
 
-    //Route::get('/subjects/{id}/edit', [\App\Http\Controllers\SubjectsController::class, 'edit']);
+    /**
+     * Перехід на форму редагування дисципліни
+     * 
+     * Лише адміністратор може переходити на форму редагування дисципліни.
+     * 
+     * @param mixed $id
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function edit($id){
         if(Gate::allows('admin')){
             $subject = Subject::find($id);
@@ -65,7 +106,15 @@ class SubjectsController extends Controller
         }
     }
 
-    //Route::patch('/subjects/{id}', [\App\Http\Controllers\SubjectsController::class, 'update']);
+    /**
+     * Збереження відредагованих даних про дисципліну
+     * 
+     * Лише адміністратор може зберігати дані про дисципліну.
+     * 
+     * @param mixed $id
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function update($id){
         if(Gate::allows('admin')){
             $subject = Subject::find($id);
@@ -85,7 +134,15 @@ class SubjectsController extends Controller
         }
     }
 
-    //Route::delete('/subjects/{id}', [\App\Http\Controllers\SubjectsController::class, 'destroy']);
+    /**
+     * Видалення даних про дисципліну
+     * 
+     * Лише адміністратор може видаляти дані про дисципліну.
+     * 
+     * @param mixed $id
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function destroy($id){
         if(Gate::allows('admin')){
             $subject = Subject::find($id);
@@ -97,7 +154,13 @@ class SubjectsController extends Controller
         }
     }
     
-    //VALIDATE
+    /**
+     * Валідація даних про дисципліну, отриманих з форм редагування та додавання
+     * 
+     * @param mixed $data
+     * 
+     * @return mixed
+     */
     private function validateData($data){
         return $this->validate($data, [
             'name' => ['required', 'min:3'],
