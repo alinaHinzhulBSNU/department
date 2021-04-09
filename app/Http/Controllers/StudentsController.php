@@ -55,7 +55,7 @@ class StudentsController extends Controller
     {
         if(Gate::allows('admin')){
             $roles = config('enums.roles'); 
-            $users = User::where('role', '!=', $roles['STUDENT'])->get(); //not already a student  
+            $users = User::where('role', $roles['NONE'])->get(); //has not role already  
             $groups = Group::all(); 
             return view('students/create', ['users' => $users, 'groups' => $groups]); 
         }else{
