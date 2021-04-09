@@ -115,7 +115,6 @@ class UsersTest extends TestCase
     { 
         return [
             'name' => 'testing',
-            'role' => 'testing',
         ];
     }
 }
