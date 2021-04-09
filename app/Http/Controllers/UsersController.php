@@ -72,7 +72,6 @@ class UsersController extends Controller
             $data = $this->validateData(\request());
     
             $user->name = $data['name'];
-            $user->role = $data['role'];
     
             $user->save();
     
@@ -142,11 +141,9 @@ class UsersController extends Controller
     private function validateData($data){
         return $this->validate($data, [
             'name' => ['required', 'min:3'],
-            'role' => ['required'],
         ], [
             'name.required' => 'ПІБ має бути заповнене!',
             'name.min' => 'ПІБ має бути довше 3 символів!',
-            'role.required' => 'Роль має бути обрана!',
         ]);
     }
 }
