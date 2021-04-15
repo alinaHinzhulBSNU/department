@@ -42,6 +42,8 @@ html body section {
 
 html body section .table-container {
   overflow-x: auto;
+  margin-left: 3%;
+  margin-right: 3%;
 }
 
 html body section .table-hover tbody tr:hover {

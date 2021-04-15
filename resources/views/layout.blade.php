@@ -31,7 +31,7 @@
                     <span class="font-weight-bold">Факультет комп'ютерних наук</span>
                 </a>
 
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -74,7 +74,7 @@
         <!--Content-->
         <section class="main-content text-center pb-3 pt-3">
             <div class="row justify-content-center p-0 m-0">
-                <div class="col-md-10">
+                <div class="col-md-11">
                     @yield('content')
                 </div>
             </div>

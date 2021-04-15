@@ -51,6 +51,8 @@ html{
       flex: 1 0 auto;
       .table-container{
         overflow-x:auto;
+        margin-left: 3%;
+        margin-right: 3%;
       }
       .table-hover tbody tr{
         &:hover{
