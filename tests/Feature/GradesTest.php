@@ -279,6 +279,25 @@ class GradesTest extends TestCase
         );
     }
 
+    /** @dataProvider providerECTSGradesData */
+    public function testConverToECTS($grade, $ECTS) {
+        $grade = Grade::factory()->create(['grade' => $grade]);
+        $this->assertEquals($grade->toECTS(), $ECTS);
+    }
+
+    // Розбиття на класи еквівалентності
+    public function providerECTSGradesData() {
+        return array(
+            array(20, "F"),
+            array(40, "FX"),
+            array(62, "E"),
+            array(70, "D"),
+            array(78, "C"),
+            array(85, "B"),
+            array(95, "A"),
+        );
+    }
+
     // Helper functions: 
     private function actingAsAdmin(){
         $admin = User::factory()->create(['role' => 'admin']); //we can override any of the fields inside create()
