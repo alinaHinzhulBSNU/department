@@ -247,6 +247,38 @@ class GradesTest extends TestCase
 
     }
 
+    // ТЕСТУВАННЯ ПЕРЕВЕДЕННЯ ОЦІІНКИ В БАДАХ В ОЦІНКУ ЗА ІНШОЮ ШКАЛОЮ 
+    // (ПАРАМЕТРИЗОВАНІ ТЕСТИ)
+
+    /** @dataProvider providerNationalGradesData */
+    public function testConverToNational($grade, $national) {
+        $grade = Grade::factory()->create(['grade' => $grade]);
+        $this->assertEquals($grade->toNational(), $national);
+    }
+
+    // Аналіз граничних значень
+    public function providerNationalGradesData() {
+        // test with this values
+        return array(
+            array(0, "Незадовільно (борг)"),
+            array(1, "Незадовільно (борг)"),
+            array(58, "Незадовільно (борг)"),
+            array(59, "Незадовільно (борг)"),
+            array(60, "Задовільно"),
+            array(61, "Задовільно"),
+            array(73, "Задовільно"),
+            array(74, "Задовільно"),
+            array(75, "Добре"),
+            array(76, "Добре"),
+            array(88, "Добре"),
+            array(89, "Добре"),
+            array(90, "Відмінно"),
+            array(91, "Відмінно"),
+            array(99, "Відмінно"),
+            array(100, "Відмінно"),
+        );
+    }
+
     // Helper functions: 
     private function actingAsAdmin(){
         $admin = User::factory()->create(['role' => 'admin']); //we can override any of the fields inside create()

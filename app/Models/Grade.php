@@ -29,7 +29,7 @@ class Grade extends Model
     public function toNational(){
         $result = "";
 
-        if(1 <= $this->grade and $this->grade <= 59){
+        if(0 <= $this->grade and $this->grade <= 59){
             $result = "Незадовільно (борг)";
         }
         else if(60 <= $this->grade and $this->grade <= 74){
