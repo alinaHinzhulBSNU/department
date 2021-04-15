@@ -10,7 +10,7 @@
     <a href="/subjects/create" class="btn btn-success mb-3">Додати дисципліну</a>
 
     <!--Content-->
-    <div class="row">
+    <div class="row table-container">
         <table class="table table-hover table-bordered">
             <caption class="text-center">Список дисциплін</caption>
             <thead class="thead-light">

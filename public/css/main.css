@@ -40,8 +40,27 @@ html body section {
   flex: 1 0 auto;
 }
 
+html body section .table-container {
+  overflow-x: auto;
+}
+
 html body section .table-hover tbody tr:hover {
   background-color: #faedff !important;
+}
+
+html body section #gradebook {
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  border-top: 2px solid #d6d6d6;
+  border-bottom: 2px solid #d6d6d6;
+}
+
+html body section #gradebook tr .column-left {
+  border-left: 2px solid #d6d6d6;
+}
+
+html body section #gradebook tr .column-right {
+  border-right: 2px solid #d6d6d6;
 }
 
 html body footer {

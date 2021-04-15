@@ -12,8 +12,11 @@ function sortTableByColumn(table, column, asc = false){
 
     // Sort each row
     const sortedRows = rows.sort((firstRow, secondRow) =>{
-        const firstRowValue = parseInt(firstRow.querySelector(`td:nth-child(${ column + 1})`).textContent.trim());
-        const secondRowValue = parseInt(secondRow.querySelector(`td:nth-child(${ column + 1})`).textContent.trim());
+        // Because of collspan property
+        const tdNumber = column <= 1 ? column + 1 : column + 2*(column - 1) + 1;
+
+        const firstRowValue = parseInt(firstRow.querySelector(`td:nth-child(${ tdNumber })`).textContent.trim());
+        const secondRowValue = parseInt(secondRow.querySelector(`td:nth-child(${ tdNumber })`).textContent.trim());
 
         return firstRowValue > secondRowValue ? (1 * direction) : (-1 * direction);
     });
@@ -38,8 +41,13 @@ document.querySelectorAll("#gradebook th").forEach(headerCell => {
             const table = document.querySelector("#gradebook");
             const colIndex = Array.prototype.indexOf.call(headerCell.parentElement.children, headerCell);
             const isAscending = headerCell.classList.contains("th-sort-asc");
-    
-            sortTableByColumn(table, colIndex , !isAscending);
+
+            const colsCount = table.rows[0].cells.length;
+
+            // Не сортувати першу(ПІБ) та останню колонку (стипендія) 
+            if(colIndex != 0 && colIndex != colsCount - 1){
+                sortTableByColumn(table, colIndex , !isAscending);
+            }
         }
     });
 });

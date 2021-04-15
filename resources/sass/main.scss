@@ -1,6 +1,7 @@
 //variables
 $accent:  #ffad88;
 $color: #427590;
+$gradebook_border_width: 2px;
 
 //overriding bootstrap colors: (BEFORE bootstrap import) 
 $theme-colors: (
@@ -48,9 +49,26 @@ html{
     }
     section{
       flex: 1 0 auto;
+      .table-container{
+        overflow-x:auto;
+      }
       .table-hover tbody tr{
         &:hover{
           background-color: #faedff !important;
+        }
+      }
+      #gradebook{
+        white-space: nowrap;
+        flex-wrap: nowrap;
+        border-top: $gradebook_border_width solid #d6d6d6;
+        border-bottom: $gradebook_border_width solid #d6d6d6;
+        tr{
+          .column-left{
+            border-left: $gradebook_border_width solid #d6d6d6;
+          }
+          .column-right{
+            border-right: $gradebook_border_width solid #d6d6d6;
+          }
         }
       }
     }
