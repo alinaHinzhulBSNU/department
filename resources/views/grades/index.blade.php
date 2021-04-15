@@ -60,7 +60,7 @@
                             @foreach($student->grades as $grade)
                                 @if($grade->subject->id === $subject->id)
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="@if(Auth::user()->can('update', $grade, Grade::class)) col-md-4 @else col-md-12 @endif">
                                             <p>{{ $grade->grade }}</p>
                                         </div>
                                         @if(Auth::user()->can('update', $grade, Grade::class))

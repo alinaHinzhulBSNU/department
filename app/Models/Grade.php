@@ -24,4 +24,24 @@ class Grade extends Model
             'id'
         );
     }
+
+    // Переведення в оцінку за національною шкалою
+    public function toNational(){
+        $result = "";
+
+        if(1 <= $this->grade and $this->grade <= 59){
+            $result = "Незадовільно (борг)";
+        }
+        else if(60 <= $this->grade and $this->grade <= 74){
+            $result = "Задовільно";
+        }
+        else if(75 <= $this->grade and $this->grade <= 89){
+            $result = "Добре";
+        }
+        else if(90 <= $this->grade and $this->grade <= 100){
+            $result = "Відмінно";
+        }
+        
+        return $result;
+    }
 }

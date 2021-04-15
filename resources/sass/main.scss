@@ -39,7 +39,7 @@ html{
           color: $color;
         }
       }
-      #navbarNav .navbar-nav li a{
+      #navbarNav .navbar-nav li a, #navbarNav .navbar-nav li i{
         color: $color;
         &:hover{
           color: $accent;
