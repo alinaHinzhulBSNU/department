@@ -53,20 +53,37 @@
 <body>
     <h3>Факультет Комп'ютерних Наук</h3>
     <h3>Група {{ $group->number }}</h3>
+    <h3>Дисципліна: {{ $subject->name }}</h3> 
     <table>
         <tr>
             <th>Студент</th>
-            <th>{{ $subject->name }}</th>
+            <th>Бали</th>
+            <th>ECTS</th>
+            <th>Національна шкала</th>
         </tr>
         @php $counter = 3 @endphp
         @foreach($group->students as $student)
             <tr>
                 @php $counter++ @endphp
                 <td>{{ $student->user->name }}</td>
-                <td>
+                <td> <!-- grade number --> 
                     @foreach($student->grades as $grade)
                         @if($grade->subject->id === $subject->id)
                             {{ $grade->grade }} 
+                        @endif
+                    @endforeach
+                </td>
+                <td> <!-- grade letter --> 
+                    @foreach($student->grades as $grade)
+                        @if($grade->subject->id === $subject->id)
+                            {{ $grade->toECTS() }} 
+                        @endif
+                    @endforeach
+                </td>
+                <td> <!-- grade word --> 
+                    @foreach($student->grades as $grade)
+                        @if($grade->subject->id === $subject->id)
+                            {{ $grade->toNational() }} 
                         @endif
                     @endforeach
                 </td>
