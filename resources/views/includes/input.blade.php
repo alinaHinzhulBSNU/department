@@ -1,8 +1,8 @@
 <div class="form-group row">
-    <div class="label col-md-4 text-right">
+    <div class="label col-md-4 col-sm-4 text-right">
         <label for="{{ $id }}">{{ $label }}</label>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-8 col-sm-8">
         <input type="text"
                name="{{ $id }}"
                id="{{ $id }}"

@@ -18,10 +18,10 @@
 
                 <!--Відповідна група -->
                 <div class="form-group row">
-                    <div class="label col-md-4 text-right">
+                    <div class="label col-md-4 col-sm-4 text-right">
                         <label for="group_id">Група:</label>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-8 col-sm-8">
                         <select id="group_id" name="group_id" class="form-control {{ $errors->has('group_id') ? 'invalid':'' }}">
                             <option selected disabled value="0">Оберіть відповідну групу</option>
                             @foreach($groups as $group)
@@ -35,7 +35,7 @@
 
                 <div class="form-group row p-0 m-0">
                     <!-- Староста -->
-                    <div class="col-md-4">
+                    <div class="col-md-4 col-sm-4">
                         <input type='hidden' value='0' name="is_class_leader">
                         <input type="checkbox"  name="is_class_leader" value="1"
                             @if($student->is_class_leader == 1) checked @endif>
@@ -43,7 +43,7 @@
                     </div>
 
                     <!-- Академ. Стипендія -->
-                    <div class="col-md-4">
+                    <div class="col-md-4 col-sm-4">
                         <input type='hidden' value='0' name="has_grant">
                         <input type="checkbox" id="has_grant" name="has_grant" value="1"
                             @if($student->has_grant == 1) checked @endif>
@@ -51,7 +51,7 @@
                     </div>
 
                     <!-- Соц. стипендія  -->
-                    <div class="col-md-4">
+                    <div class="col-md-4 col-sm-4">
                         <input type='hidden' value='0' name="has_social_grant">
                         <input type="checkbox" id="has_social_grant" name="has_social_grant" value="1"
                             @if($student->has_social_grant == 1) checked @endif>

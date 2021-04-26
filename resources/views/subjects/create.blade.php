@@ -26,10 +26,10 @@
 
                 <!--Викладач-->
                 <div class="form-group row">
-                    <div class="label col-md-4 text-right">
+                    <div class="label col-md-4 col-sm-4 text-right">
                         <label for="teacher_id">Викладач:</label>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-8 col-sm-8">
                         <select id="teacher_id" name="teacher_id" class="form-control {{ $errors->has('teacher_id') ? 'invalid':'' }}">
                             <option selected disabled value="0">Оберіть викладача</option>
                             @foreach($teachers as $teacher)
@@ -44,10 +44,10 @@
 
                 <!--Тип підсумкової атестації-->
                 <div class="form-group row">
-                    <div class="label col-md-4 text-right">
+                    <div class="label col-md-4 col-sm-4 text-right">
                         <label for="exam_type">Тип підсумкової атестації:</label>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-8 col-sm-8">
                         <select id="exam_type" name="exam_type" class="form-control {{ $errors->has('exam_type') ? 'invalid':'' }}">
                             @foreach(config('enums.exams') as $exam_type)
                                 <option>{{ $exam_type }}</option>

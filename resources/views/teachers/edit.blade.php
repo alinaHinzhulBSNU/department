@@ -22,10 +22,10 @@
 
                 <!--Кафедра-->
                 <div class="form-group row">
-                    <div class="label col-md-4 text-right">
+                    <div class="label col-md-4 col-sm-4 text-right">
                         <label for="department">Кафедра:</label>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-8 col-sm-8">
                         <select id="department" name="department" class="form-control {{ $errors->has('department') ? 'invalid':'' }}">
                             @foreach(config('enums.departments') as $department)
                                 <option  @isset($teacher) @if($teacher->department == $department) selected @endif @endisset>

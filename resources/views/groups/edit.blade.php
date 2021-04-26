@@ -27,10 +27,10 @@
 
                 <!--Спеціальність-->
                 <div class="form-group row">
-                    <div class="label col-md-4 text-right">
+                    <div class="label col-md-4 col-sm-4 text-right">
                         <label for="major">Спеціальність:</label>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-8 col-sm-8">
                         <select id="major" name="major" class="form-control {{ $errors->has('major') ? 'invalid':'' }}">
                             @foreach(config('enums.majors') as $major)
                                 <option @if($group->major == $major) selected @endif>
