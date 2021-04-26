@@ -1,0 +1,12 @@
+unit_test:
+  image: composer:latest
+  stage: test
+  script:
+    - composer update
+    - composer install
+    - cp .env.example .env
+    - php artisan key:generate
+    - vendor/bin/phpunit --log-junit phpunit-report.xml
+  artifacts:
+    reports:
+            junit: phpunit-report.xml
