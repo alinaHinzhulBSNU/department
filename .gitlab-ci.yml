@@ -6,4 +6,7 @@ unit_test:
     - composer install
     - cp .env.example .env
     - php artisan key:generate
-    - vendor/bin/phpunit --testsuite "Feature"
+    - vendor/bin/phpunit --testsuite "Feature" --log-junit phpunit-report.xml
+  artifacts:
+    reports:
+      junit: phpunit-report.xml
