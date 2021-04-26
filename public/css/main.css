@@ -18,10 +18,7 @@ html body header {
   flex: 0 0 auto;
 }
 
-html body header a i {
-  color: #427590;
-}
-
+html body header a i,
 html body header a span {
   color: #427590;
 }
@@ -29,15 +26,98 @@ html body header a span {
 html body header #navbarNav .navbar-nav li a,
 html body header #navbarNav .navbar-nav li i {
   color: #427590;
+  /*Animation for menu*/
 }
 
 html body header #navbarNav .navbar-nav li a:hover,
 html body header #navbarNav .navbar-nav li i:hover {
-  color: #ffad88;
+  transition: 1.5s;
+  -webkit-animation: color_animation 1.5s ease 1;
+          animation: color_animation 1.5s ease 1;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes color_animation {
+  0% {
+    color: #427590;
+  }
+
+  25% {
+    color: #0E6251;
+  }
+
+  50% {
+    color: #7bd095;
+  }
+
+  75% {
+    color: #ffad88;
+  }
+
+  100% {
+    color: #CA6F1E;
+  }
+}
+
+@keyframes color_animation {
+  0% {
+    color: #427590;
+  }
+
+  25% {
+    color: #0E6251;
+  }
+
+  50% {
+    color: #7bd095;
+  }
+
+  75% {
+    color: #ffad88;
+  }
+
+  100% {
+    color: #CA6F1E;
+  }
 }
 
 html body section {
   flex: 1 0 auto;
+}
+
+html body section #find_group,
+html body section #find_student {
+  /* Animation for search forms*/
+}
+
+html body section #find_group:hover,
+html body section #find_student:hover {
+  transition: 1.5s;
+  -webkit-animation: shadow_animation 1.5s ease 1;
+          animation: shadow_animation 1.5s ease 1;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes shadow_animation {
+  0% {
+    box-shadow: 0 0 0px rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+  }
+}
+
+@keyframes shadow_animation {
+  0% {
+    box-shadow: 0 0 0px rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+  }
 }
 
 html body section .table-container {

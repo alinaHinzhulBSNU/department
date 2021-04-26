@@ -7,7 +7,7 @@
 @section('content')
 <div class="row m-0 p-0 justify-content-center">
     <!--ГРУПИ-->
-    <div class="jumbotron col-md-5 m-4 p-6" style="background-color:#E9F7EF">
+    <div id="find_group" class="jumbotron col-md-5 m-4 p-6" style="background-color:#E9F7EF">
         <h4 class="text-secondary">Знайти групу:</h4>
 
         <hr class="my-4">
@@ -41,7 +41,7 @@
     </div>
 
     <!--СТУДЕНТИ-->
-    <div class="jumbotron col-md-5 m-4 p-6" style="background-color:#E9F7EF">
+    <div id="find_student" class="jumbotron col-md-5 m-4 p-6" style="background-color:#E9F7EF">
         <h4 class="text-secondary">Знайти студента:</h4>
         <hr class="my-4">
 
